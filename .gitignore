@@ -1,0 +1,13 @@
+.env
+.venv/
+dashboard/node_modules/
+dashboard/dist/
+
+datasets/raw/
+datasets/*.csv
+
+**/__pycache__/
+*.pyc
+
+ml-engine/predictions.csv
+ml-engine/models/*.pkl

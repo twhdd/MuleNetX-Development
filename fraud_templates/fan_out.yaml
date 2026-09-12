@@ -1,0 +1,6 @@
+pattern: fan_out
+conditions:
+  outward_degree: ">10"
+  transaction_burst: true
+risk_score: 76
+severity: MEDIUM

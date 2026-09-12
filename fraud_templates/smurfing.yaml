@@ -1,0 +1,7 @@
+pattern: smurfing
+conditions:
+  transaction_count: ">20"
+  avg_amount: "<50000"
+  burst_window: "15m"
+risk_score: 84
+severity: HIGH

@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+python-dotenv
+neo4j
+psycopg2-binary
+redis
+pandas
+numpy
+networkx

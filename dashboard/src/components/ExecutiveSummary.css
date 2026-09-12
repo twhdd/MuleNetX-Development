@@ -1,0 +1,249 @@
+.executive-summary {
+
+    width: 95%;
+
+    margin: 30px auto;
+
+    padding: 24px;
+
+    background: #0d0d0d;
+
+    border: 1px solid #1b1b1b;
+
+    border-radius: 12px;
+
+    color: #ffffff;
+
+    font-family: Inter, sans-serif;
+
+    box-sizing: border-box;
+
+}
+
+.summary-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+}
+
+.summary-tag {
+
+    color: #22c55e;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+
+    text-transform: uppercase;
+
+}
+
+.summary-top h1 {
+
+    font-size: 34px;
+
+    margin: 0;
+
+    font-weight: 700;
+
+}
+
+.summary-date {
+
+    margin-top: 8px;
+
+    color: #9ca3af;
+
+    font-size: 14px;
+
+}
+
+.confidence-box {
+
+    text-align: center;
+
+    background: #111111;
+
+    border: 1px solid #222;
+
+    border-radius: 10px;
+
+    padding: 16px 24px;
+
+    min-width: 160px;
+
+}
+
+.confidence-box span {
+
+    display: block;
+
+    color: #888;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+}
+
+.confidence-box h2 {
+
+    color: #22c55e;
+
+    font-size: 32px;
+
+    margin: 0;
+
+}
+
+.summary-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+.summary-card {
+
+    background: #131313;
+
+    border: 1px solid #202020;
+
+    border-radius: 10px;
+
+    padding: 20px;
+
+    transition: all .25s ease;
+
+}
+
+.summary-card:hover {
+
+    border-color: #2d2d2d;
+
+    transform: translateY(-3px);
+
+}
+
+.summary-card h3 {
+
+    margin-top: 0;
+
+    margin-bottom: 18px;
+
+    font-size: 18px;
+
+    color: #ffffff;
+
+}
+
+.metric {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid #1f1f1f;
+
+}
+
+.metric:last-child {
+
+    border-bottom: none;
+
+}
+
+.metric span {
+
+    color: #bdbdbd;
+
+}
+
+.metric strong {
+
+    font-size: 16px;
+
+}
+
+.summary-card ul {
+
+    margin: 0;
+
+    padding-left: 18px;
+
+}
+
+.summary-card li {
+
+    color: #d1d5db;
+
+    margin-bottom: 14px;
+
+    line-height: 1.6;
+
+}
+
+.success {
+
+    color: #22c55e;
+
+}
+
+.warning {
+
+    color: #eab308;
+
+}
+
+.danger {
+
+    color: #ef4444;
+
+}
+
+@media (max-width: 1100px) {
+
+    .summary-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+    .summary-top {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+
+    }
+
+    .confidence-box {
+
+        width: 100%;
+
+    }
+
+}

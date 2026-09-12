@@ -1,0 +1,7 @@
+pattern: layering_ring
+conditions:
+  circular_transfers: true
+  depth: ">4"
+  repeated_amounts: true
+risk_score: 91
+severity: CRITICAL
