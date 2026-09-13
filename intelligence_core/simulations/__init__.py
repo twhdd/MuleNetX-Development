@@ -1,0 +1,1 @@
+"""Synthetic fraud pattern simulations."""

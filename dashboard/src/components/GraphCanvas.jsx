@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import ForceGraph from "./ForceGraph";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
 export default function GraphCanvas() {
 
@@ -18,7 +19,7 @@ export default function GraphCanvas() {
 
         const response =
         await fetch(
-            `http://localhost:8000/api/graph/network/${account}`
+            `${API_BASE_URL}/api/graph/network/${account}`
         );
 
         const data =

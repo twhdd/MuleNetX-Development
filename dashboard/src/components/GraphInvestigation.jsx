@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 export default function GraphInvestigation() {
 
     const [account,setAccount] =
@@ -12,7 +14,7 @@ export default function GraphInvestigation() {
 
         const response =
         await fetch(
-            `http://localhost:8000/api/graph/${account}`
+            `${API_BASE_URL}/api/graph/${account}`
         );
 
         const data =

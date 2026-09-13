@@ -1,0 +1,35 @@
+{
+  "features": [
+    "transaction_count",
+    "total_sent",
+    "total_received",
+    "average_transaction_amount",
+    "in_degree",
+    "out_degree",
+    "pagerank",
+    "betweenness",
+    "community_id",
+    "unique_recipients",
+    "unique_senders",
+    "fan_out",
+    "fan_in"
+  ],
+  "parameters": {
+    "n_estimators": 100,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "scale_pos_weight": 647.0833333333334,
+    "eval_metric": "logloss",
+    "random_state": 42
+  },
+  "decision_threshold": 0.7219058275222778,
+  "scale_pos_weight": 647.0833333333334,
+  "metrics": {
+    "precision": 0.003003003003003003,
+    "recall": 0.07142857142857142,
+    "f1": 0.005763688760806916,
+    "roc_auc": 0.9213612000039629,
+    "pr_auc": 0.007493558738047211,
+    "fraud_support": 14
+  }
+}

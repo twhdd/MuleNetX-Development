@@ -14,7 +14,7 @@ def high_risk_alerts():
     MATCH (a:Account)
 
     WHERE
-    a.risk_score >= 0.80
+    a.risk_score >= 80.0
 
     RETURN
         a.account_id AS account,

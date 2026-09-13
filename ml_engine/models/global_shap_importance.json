@@ -1,0 +1,67 @@
+[
+  {
+    "feature": "total_received",
+    "mean_abs_shap": 4.3460259437561035,
+    "rank": 1
+  },
+  {
+    "feature": "community_id",
+    "mean_abs_shap": 0.6827347278594971,
+    "rank": 2
+  },
+  {
+    "feature": "average_transaction_amount",
+    "mean_abs_shap": 0.30673444271087646,
+    "rank": 3
+  },
+  {
+    "feature": "transaction_count",
+    "mean_abs_shap": 0.009684456512331963,
+    "rank": 4
+  },
+  {
+    "feature": "total_sent",
+    "mean_abs_shap": 0.0,
+    "rank": 5
+  },
+  {
+    "feature": "in_degree",
+    "mean_abs_shap": 0.0,
+    "rank": 6
+  },
+  {
+    "feature": "out_degree",
+    "mean_abs_shap": 0.0,
+    "rank": 7
+  },
+  {
+    "feature": "pagerank",
+    "mean_abs_shap": 0.0,
+    "rank": 8
+  },
+  {
+    "feature": "betweenness",
+    "mean_abs_shap": 0.0,
+    "rank": 9
+  },
+  {
+    "feature": "unique_recipients",
+    "mean_abs_shap": 0.0,
+    "rank": 10
+  },
+  {
+    "feature": "unique_senders",
+    "mean_abs_shap": 0.0,
+    "rank": 11
+  },
+  {
+    "feature": "fan_out",
+    "mean_abs_shap": 0.0,
+    "rank": 12
+  },
+  {
+    "feature": "fan_in",
+    "mean_abs_shap": 0.0,
+    "rank": 13
+  }
+]

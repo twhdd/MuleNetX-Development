@@ -3,6 +3,8 @@ import {
     useState
 } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "";
+
 export default function AlertFeed() {
 
     const [alerts,setAlerts] =
@@ -29,7 +31,7 @@ export default function AlertFeed() {
 
         const response =
         await fetch(
-            "http://localhost:8000/api/alerts/high-risk"
+            `${API_BASE_URL}/api/alerts/high-risk`
         );
 
         const data =
