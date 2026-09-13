@@ -19,7 +19,7 @@ from ml_engine.feature_builder import build_feature_dataset
 from backend.neo4j_client import neo4j_client
 
 
-def run_pipeline(limit=10000):
+def run_pipeline(limit=10000, run_global_analytics=False):
     print("=" * 60)
     print("PHASE 2: DATA PIPELINE + GRAPH CONSTRUCTION")
     print("=" * 60)
@@ -67,8 +67,11 @@ def run_pipeline(limit=10000):
     neo4j_fraud = neo4j_stats["neo4j_fraud_transactions"]
 
     # 5. Graph Analytics
-    print("\n--- 5. Graph Analytics (GDS & Topological Features) ---")
-    run_graph_analytics()
+    if run_global_analytics:
+        print("\n--- 5. Graph Analytics (GDS & Topological Features) ---")
+        run_graph_analytics()
+    else:
+        print("\n--- 5. Graph Analytics skipped for point-in-time feature generation ---")
 
     # 6. ML-Ready Feature Dataset
     print("\n--- 6. ML-Ready Feature Dataset ---")

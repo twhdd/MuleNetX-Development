@@ -99,7 +99,7 @@ MuleNetX does not claim to be a production AML system. It is an engineering refe
 - Ingests PaySim and custom AML datasets into a normalized relational schema (PostgreSQL)
 - Constructs entity-relationship graphs in Neo4j from transaction records
 - Computes graph intelligence features per entity: degree, PageRank, betweenness centrality, community membership, fraud ring flags
-- Engineers a 40+ feature vector per account for ML training
+- Engineers a 13-feature vector per account for ML training
 - Trains an XGBoost binary classifier with class-imbalance handling
 - Generates per-prediction SHAP explanations with feature attribution
 - Detects fraud rings using community detection (Louvain/Label Propagation)
@@ -154,7 +154,9 @@ This design means that the investigation workflow is natively graph-aware. When 
 
 Risk scores without explanations are not useful for investigators. A model that outputs `risk_score: 0.87` provides no actionable intelligence unless the investigator can understand why the score is 0.87.
 
-Every risk score produced by MuleNetX is accompanied by a SHAP explanation that attributes the score to specific features. These explanations are stored, indexed, and surfaced in the dashboard. The AI copilot has access to SHAP feature attributions when constructing investigation narratives.
+The implemented SHAP command produces file-based explanations for the held-out
+test accounts. Dashboard and copilot consumption depends on the generated
+files; they are not stored in PostgreSQL.
 
 This is not just a UX concern. In regulated environments, institutions must be able to explain why an account was flagged. A system that cannot explain its outputs cannot be used in compliance workflows.
 
@@ -222,18 +224,13 @@ MuleNetX/
 │   └── postgres/
 │       ├── migrations/
 │       └── seeds/
-├── datasets/                  # Dataset download, validation, preprocessing
-│   ├── paysim/
-│   │   ├── download.py
-│   │   ├── validate.py
-│   │   └── preprocess.py
-│   └── aml/
+├── datasets/                  # Dataset validation and preprocessing
+│   ├── __init__.py
+│   ├── preprocess.py
+│   └── raw/                   # Local raw PaySim CSV (not tracked)
 ├── docker/                    # Docker and Docker Compose configuration
-│   ├── docker-compose.yml
-│   ├── docker-compose.dev.yml
-│   ├── backend.Dockerfile
-│   ├── dashboard.Dockerfile
-│   └── neo4j/neo4j.conf
+│   ├── compose/docker-compose.yml
+│   └── backend/Dockerfile
 ├── docs/                      # Extended documentation and ADRs
 ├── fraud_templates/           # Predefined fraud pattern templates
 │   ├── layering.json
@@ -245,15 +242,15 @@ MuleNetX/
 │   ├── analytics.py           # PageRank, centrality, community detection
 │   ├── fraud_ring.py          # Fraud ring detection logic
 │   └── risk_propagation.py    # Risk score propagation
-├── intelligence-core/         # Core intelligence computation
+├── intelligence_core/         # Core intelligence computation
 │   ├── features.py            # Feature engineering pipeline
 │   ├── scoring.py             # Risk scoring orchestrator
 │   └── signals.py             # Signal generation and aggregation
-├── investigation-engine/      # Investigation session management
+├── investigation_engine/      # Investigation session management
 │   ├── session.py
 │   ├── context_builder.py     # Context assembly for AI copilot
 │   └── workflow.py
-├── ml-engine/                 # ML training and inference
+├── ml_engine/                 # ML training and inference
 │   ├── train.py               # XGBoost training pipeline
 │   ├── evaluate.py            # Model evaluation and metrics
 │   ├── explain.py             # SHAP explanation generation
@@ -277,9 +274,9 @@ MuleNetX/
 | `docker/` | Container orchestration, service topology | Docker, Docker Compose |
 | `fraud_templates/` | Fraud pattern definitions for template matching | JSON schema |
 | `graph_engine/` | Graph construction, analytics computation | Neo4j driver, NetworkX |
-| `intelligence-core/` | Feature engineering, risk scoring | pandas, scikit-learn |
-| `investigation-engine/` | Investigation sessions, context assembly | Neo4j driver, pydantic |
-| `ml-engine/` | Model training, inference, explanation | XGBoost, SHAP |
+| `intelligence_core/` | Feature engineering, risk scoring | pandas, scikit-learn |
+| `investigation_engine/` | Investigation sessions, context assembly | Neo4j driver, pydantic |
+| `ml_engine/` | Model training, inference, explanation | XGBoost, SHAP |
 | `scripts/` | Pipeline orchestration, operational tooling | Python |
 | `tests/` | Verification, regression testing | pytest |
 
@@ -319,9 +316,9 @@ MuleNetX/
               ▼                            ▼
 ┌──────────────────────┐    ┌──────────────────────────────────────┐
 │  Graph Analytics     │    │        Intelligence Core             │
-│  graph_engine/       │    │        intelligence-core/            │
+│  graph_engine/       │    │        intelligence_core/            │
 │                      │    │                                      │
-│  - PageRank          │    │  - Feature engineering (40+ features)│
+│  - PageRank          │    │  - Feature engineering (13 features)│
 │  - Betweenness       │    │  - Graph + transactional features    │
 │  - Community detect  │    │  - Feature vector assembly           │
 │  - Fraud ring detect │    │                                      │
@@ -331,7 +328,7 @@ MuleNetX/
        │ Neo4j nodes                           ▼
        ▼                          ┌──────────────────────────────┐
 ┌──────────────────┐              │        ML Engine             │
-│ Neo4j (enriched) │              │        ml-engine/            │
+│ Neo4j (enriched) │              │        ml_engine/            │
 │  - community_id  │              │                              │
 │  - pagerank      │              │  - XGBoost training          │
 │  - fraud_ring_id │              │  - SHAP explanations         │
@@ -385,16 +382,14 @@ Phase 1: Acquisition
 Raw CSVs (PaySim format)
          │
          ▼
-datasets/paysim/download.py     ← Downloads, validates schema, checks checksums
-datasets/paysim/validate.py     ← Validates row counts, column types, value ranges
-datasets/paysim/preprocess.py   ← Normalizes timestamps, currency codes, account IDs
+datasets/preprocess.py          ← Validates and normalizes PaySim rows
 
 Phase 2: Relational Ingestion
 ──────────────────────────────
 Normalized DataFrames
          │
          ▼
-scripts/ingest.py               ← Orchestrates batch inserts
+scripts/run_phase2_pipeline.py  ← Orchestrates preprocessing and ingestion
          │
          ▼
 PostgreSQL:
@@ -407,7 +402,7 @@ Phase 3: Graph Construction
 PostgreSQL rows
          │
          ▼
-graph_engine/builder.py         ← Reads in batches, creates Neo4j nodes/edges
+graph_engine/ingest_paysim.py   ← Reads PostgreSQL rows and creates Neo4j edges
          │
          ▼
 Neo4j:
@@ -437,15 +432,15 @@ Phase 5: ML Feature Engineering + Scoring
 Neo4j (enriched) + PostgreSQL
          │
          ▼
-intelligence-core/features.py   ← Assembles 40+ feature vectors
-ml-engine/train.py              ← XGBoost training (first run)
-ml-engine/explain.py            ← SHAP value computation
+graph_engine/point_in_time_features.py ← Builds the point-in-time feature dataset
+ml_engine/train_model.py        ← XGBoost training (Phase 3)
+ml_engine/shap_explainer.py     ← SHAP value computation (Phase 4)
          │
          ▼
-PostgreSQL:
-  - account_features table
-  - risk_scores table
-  - shap_values table
+Generated files:
+  - datasets/account_features.csv
+  - datasets/test_predictions.csv
+  - datasets/shap_values.csv
 Neo4j:
   - Account.ml_risk_score (written back)
 
@@ -455,7 +450,7 @@ All enriched data
          │
          ▼
 backend/ (FastAPI)              ← Serves API requests
-investigation-engine/           ← Manages investigation sessions
+investigation_engine/           ← Manages investigation sessions
          │
          ▼
 dashboard/ (React)              ← Renders investigation UI
@@ -533,8 +528,8 @@ Properties:
   community_id            : Integer
   fraud_ring_id           : String   [nullable]
 
-  # ML properties (written by ml-engine/)
-  ml_risk_score           : Float    [0.0 – 1.0]
+  # ML properties (written by ml_engine/)
+  risk_score              : Float    [0.0 – 100.0; deterministic fraud_probability * 100]
   risk_tier               : String   ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
   propagated_risk         : Float    [0.0 – 1.0]
 
@@ -550,7 +545,7 @@ Properties:
   unique_counterparties   : Integer
 
 Secondary labels (applied during analysis):
-  :HighRisk           — ml_risk_score >= 0.8
+  :HighRisk           — risk_score >= 80.0
   :FraudRingMember    — fraud_ring_id IS NOT NULL
   :MuleAccount        — detected mule pattern
 
@@ -570,7 +565,7 @@ Properties:
   day_of_week         : Integer
 
 Secondary labels:
-  :FlaggedTransaction — is_fraud = true OR ml_risk_score >= 0.8
+  :FlaggedTransaction — is_fraud = true OR risk_score >= 80.0
   :LargeTransaction   — amount >= 10000
 
 (:FraudRing)
@@ -731,123 +726,24 @@ This query runs after all transactions are loaded. For large datasets it can tak
 
 ## 11. Feature Engineering Pipeline
 
-Feature engineering is the most consequential step in the ML pipeline. The quality of features determines model performance more than algorithm selection. MuleNetX engineers features from four sources: transactional statistics, graph topology, temporal patterns, and risk propagation signals.
-
-The feature engineering pipeline lives in `intelligence-core/features.py`.
+Feature engineering is the most consequential step in the ML pipeline. The implemented point-in-time builder lives in `graph_engine/point_in_time_features.py` and reads the PostgreSQL transaction table plus the Neo4j graph snapshots.
 
 ### Feature Categories
 
-**Category 1: Transactional Statistics (14 features)**
+The current model uses 13 numeric features recorded in `ml_engine/models/model_config.json`:
 
 ```python
-TRANSACTIONAL_FEATURES = [
-    "total_sent_amount",           # Sum of all outgoing transaction amounts
-    "total_received_amount",       # Sum of all incoming transaction amounts
-    "net_flow",                    # total_received - total_sent
-    "flow_ratio",                  # total_sent / (total_received + epsilon)
-    "transaction_count_out",
-    "transaction_count_in",
-    "avg_sent_amount",
-    "avg_received_amount",
-    "max_sent_amount",
-    "std_sent_amount",
-    "cash_out_ratio",              # Fraction of transactions that are CASH_OUT type
-    "unique_recipients_count",
-    "unique_senders_count",
-    "round_amount_ratio",          # Fraction of transactions with round amounts
+[
+    "transaction_count", "total_sent", "total_received",
+    "average_transaction_amount", "in_degree", "out_degree",
+    "pagerank", "betweenness", "community_id",
+    "unique_recipients", "unique_senders", "fan_out", "fan_in"
 ]
-```
-
-`round_amount_ratio` captures smurfing: structuring transactions below reporting thresholds produces high round-amount ratios. `flow_ratio` captures accounts that predominantly send rather than receive — characteristic of money mule behavior.
-
-**Category 2: Graph Topology Features (12 features)**
-
-```python
-GRAPH_FEATURES = [
-    "pagerank_score",
-    "betweenness_centrality",
-    "degree_in",
-    "degree_out",
-    "degree_ratio",
-    "weighted_degree_in",
-    "weighted_degree_out",
-    "clustering_coefficient",
-    "community_size",
-    "community_fraud_density",     # Fraction of community flagged as fraud
-    "max_neighbor_risk",
-    "avg_neighbor_risk",
-]
-```
-
-`community_fraud_density` is a particularly powerful feature. If 60% of accounts in a detected community are known fraudulent, any new account in that community starts with a strong prior toward fraud. `betweenness_centrality` identifies accounts acting as intermediaries between otherwise separate clusters — a classic money mule or layering pattern.
-
-**Category 3: Temporal Pattern Features (8 features)**
-
-```python
-TEMPORAL_FEATURES = [
-    "account_age_days",
-    "active_days",
-    "activity_ratio",
-    "burst_score",                 # Coefficient of variation of inter-transaction times
-    "night_transaction_ratio",     # Fraction of transactions 00:00–06:00
-    "weekend_transaction_ratio",
-    "peak_hour_concentration",     # Entropy of transaction hour distribution
-    "velocity_30d",                # Transactions in last 30d vs lifetime average
-]
-```
-
-`burst_score` captures accounts that transact in concentrated bursts rather than steady streams. Fraud rings often coordinate transactions within narrow time windows.
-
-**Category 4: Risk Propagation Features (6 features)**
-
-```python
-PROPAGATION_FEATURES = [
-    "propagated_risk_score",
-    "high_risk_neighbor_count",
-    "fraud_ring_membership",
-    "fraud_ring_confidence",
-    "shared_recipient_count",
-    "two_hop_fraud_exposure",
-]
-```
-
-### Feature Assembly
-
-```python
-# intelligence-core/features.py
-
-class FeatureAssembler:
-    def assemble(self, account_ids: List[str]) -> pd.DataFrame:
-        tx_features = self._get_transactional_features(account_ids)
-        graph_features = self._get_graph_features(account_ids)
-        temporal_features = self._get_temporal_features(account_ids)
-        propagation_features = self._get_propagation_features(account_ids)
-
-        features = (
-            tx_features
-            .merge(graph_features, on='account_id', how='left')
-            .merge(temporal_features, on='account_id', how='left')
-            .merge(propagation_features, on='account_id', how='left')
-        )
-
-        features = self._impute_missing(features)
-        features = self._transform_features(features)
-        return features
-
-    def _transform_features(self, df: pd.DataFrame) -> pd.DataFrame:
-        # Log-transform highly skewed monetary features
-        for col in ['total_sent_amount', 'total_received_amount', 'max_sent_amount']:
-            df[f'{col}_log'] = np.log1p(df[col])
-        # Clip extreme values at 99th percentile
-        for col in ['betweenness_centrality', 'burst_score']:
-            p99 = df[col].quantile(0.99)
-            df[col] = df[col].clip(upper=p99)
-        return df
 ```
 
 ### Known Feature Quality Issues
 
-1. **Cold start**: New accounts with fewer than 5 transactions have unreliable statistical features. The pipeline applies an `is_new_account` flag and the model was trained with this flag.
+1. **Cold start**: New accounts with fewer transactions have less reliable aggregate features. The current model feature list is defined in `ml_engine/models/model_config.json`.
 2. **Graph staleness**: Graph features are computed in batch and may lag the live graph state. Null graph features are imputed as population medians.
 3. **PaySim-specific features**: The `step` field is specific to the simulation and would not be available in real data. It is excluded from ML training.
 
@@ -893,7 +789,7 @@ Layer 4: Tier Assignment
 ```
 
 ```python
-# intelligence-core/scoring.py
+# intelligence_core/scoring.py
 
 class RiskScorer:
     def score(self, account_id: str, features: dict) -> RiskScore:
@@ -931,66 +827,23 @@ XGBoost is the core ML algorithm used for fraud detection. The choice over deep 
 
 1. **Tabular data performance**: XGBoost consistently outperforms deep learning on tabular datasets with hundreds of features and millions of samples.
 2. **Interpretability via SHAP**: TreeExplainer computes exact SHAP values for tree-based models in O(TLD) time.
-3. **Training speed**: ~3–8 minutes on a modern CPU for 6M samples and 40 features.
+3. **Training speed**: Depends on the generated account feature dataset and local hardware.
 4. **Robustness to missing features**: Handles missing values natively via learned default directions.
 5. **Proven AML track record**: XGBoost-family models are widely deployed in production AML systems.
 
 ### Training Pipeline
 
 ```python
-# ml-engine/train.py
+# ml_engine/train_model.py
 
 class FraudDetectionTrainer:
 
-    DEFAULT_PARAMS = {
-        "objective": "binary:logistic",
-        "eval_metric": ["auc", "aucpr", "logloss"],
-        "learning_rate": 0.05,
-        "max_depth": 7,
-        "min_child_weight": 10,
-        "subsample": 0.8,
-        "colsample_bytree": 0.8,
-        "scale_pos_weight": None,   # Set dynamically from class ratio
-        "n_estimators": 500,
-        "early_stopping_rounds": 50,
-        "reg_alpha": 0.1,
-        "reg_lambda": 1.0,
-        "random_state": 42,
-        "n_jobs": -1,
-        "tree_method": "hist",
-    }
-
-    def train(self, X: pd.DataFrame, y: pd.Series) -> xgb.XGBClassifier:
-        neg_count = (y == 0).sum()
-        pos_count = (y == 1).sum()
-        scale_pos_weight = neg_count / pos_count
-
-        params = {**self.DEFAULT_PARAMS, "scale_pos_weight": scale_pos_weight}
-
-        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-        cv_scores = []
-
-        for fold, (train_idx, val_idx) in enumerate(cv.split(X, y)):
-            X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
-            y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
-
-            model = xgb.XGBClassifier(**params)
-            model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=100)
-            cv_scores.append({
-                'fold': fold,
-                'best_iteration': model.best_iteration,
-                'val_auc': model.evals_result()['validation_0']['auc'][-1],
-                'val_aucpr': model.evals_result()['validation_0']['aucpr'][-1],
-            })
-
-        best_n = int(np.mean([s['best_iteration'] for s in cv_scores]))
-        final_params = {**params, 'n_estimators': best_n}
-        del final_params['early_stopping_rounds']
-
-        final_model = xgb.XGBClassifier(**final_params)
-        final_model.fit(X, y)
-        return final_model
-```
+The implemented training entry point is `ml_engine/train_model.py`. Its
+recorded configuration is `n_estimators=100`, `max_depth=4`,
+`learning_rate=0.05`, `eval_metric="logloss"`, and `random_state=42`.
+`scale_pos_weight` is calculated from the training split. The exact feature
+list, parameters, threshold, and recorded metrics are written to
+`ml_engine/models/model_config.json`.
 
 ### Class Imbalance Handling
 
@@ -1002,12 +855,11 @@ Alternatives considered and not used: SMOTE (can produce impossible graph featur
 
 | Parameter | Value | Rationale |
 |---|---|---|
-| `max_depth` | 7 | Moderate; deeper trees overfit on rare fraud patterns |
-| `min_child_weight` | 10 | Prevents splits on very small/noisy node groups |
+| `n_estimators` | 100 | Recorded model configuration |
+| `max_depth` | 4 | Recorded model configuration |
 | `learning_rate` | 0.05 | Slow + early stopping enables fine-grained convergence |
-| `subsample` | 0.8 | Stochastic — reduces tree correlation, improves generalization |
-| `tree_method` | hist | ~2–4x faster than exact, negligible accuracy loss |
-| `reg_alpha` | 0.1 | L1 regularization encourages feature sparsity; graph features are correlated |
+| `eval_metric` | logloss | Recorded model configuration |
+| `random_state` | 42 | Recorded model configuration |
 
 ---
 
@@ -1030,7 +882,7 @@ This guarantees SHAP values are a complete decomposition of the prediction, not 
 ### TreeExplainer Implementation
 
 ```python
-# ml-engine/explain.py
+# ml_engine/shap_explainer.py
 
 class SHAPExplainer:
     def __init__(self, model, X_background: pd.DataFrame):
@@ -1072,58 +924,16 @@ class SHAPExplainer:
 
 ### Example SHAP Output
 
-```json
-{
-  "account_id": "C1234567890",
-  "base_value": 0.0013,
-  "prediction": 0.847,
-  "top_features": [
-    {
-      "feature_name": "community_fraud_density",
-      "shap_value": 0.312,
-      "feature_value": 0.73,
-      "direction": "increases_risk"
-    },
-    {
-      "feature_name": "cash_out_ratio",
-      "shap_value": 0.198,
-      "feature_value": 0.89,
-      "direction": "increases_risk"
-    },
-    {
-      "feature_name": "betweenness_centrality",
-      "shap_value": 0.143,
-      "feature_value": 0.0034,
-      "direction": "increases_risk"
-    },
-    {
-      "feature_name": "account_age_days",
-      "shap_value": -0.087,
-      "feature_value": 312,
-      "direction": "decreases_risk"
-    }
-  ]
-}
-```
-
-This tells an investigator: this account's high risk score is primarily driven by (1) being in a community with 73% fraud density, (2) 89% cash-out ratio, and (3) high betweenness centrality. Its relatively old age slightly mitigates the score.
+The generated explanation contains the account identifier, prediction, and
+feature attributions for the current model. Exact values are generated at run
+time and are not claimed here.
 
 ### SHAP Storage
 
-```sql
-CREATE TABLE shap_values (
-    id              BIGSERIAL PRIMARY KEY,
-    account_id      VARCHAR(50) REFERENCES accounts(account_id),
-    pipeline_run_id UUID REFERENCES pipeline_runs(run_id),
-    base_value      FLOAT NOT NULL,
-    prediction      FLOAT NOT NULL,
-    feature_impacts JSONB NOT NULL,
-    computed_at     TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX shap_values_account_idx ON shap_values(account_id);
-CREATE INDEX shap_values_run_idx ON shap_values(pipeline_run_id);
-```
+The implemented SHAP pipeline writes file-based outputs:
+`datasets/shap_values.csv`, `datasets/account_explanations.csv`,
+`ml_engine/account_explanations.json`, and global importance files. These
+artifacts remain file-based rather than being written to PostgreSQL.
 
 ---
 
@@ -1503,7 +1313,7 @@ RETURN count(a) AS updated_nodes
 Financial fraud often has distinct temporal signatures. The temporal analysis pipeline computes time-based features and anomaly signals.
 
 ```python
-# intelligence-core/features.py
+# graph_engine/point_in_time_features.py
 
 def compute_temporal_features(account_id: str, transactions: pd.DataFrame) -> dict:
     transactions = transactions.sort_values('timestamp')
@@ -1573,7 +1383,7 @@ TEMPORAL_ANOMALY_RULES = [
 
 ## 22. Investigation Workspace Architecture
 
-The investigation workspace is a stateful workflow environment that tracks an investigator's findings, maintains context across queries, and integrates with the AI copilot. It lives in `investigation-engine/`.
+The investigation workspace is a stateful workflow environment that tracks an investigator's findings, maintains context across queries, and integrates with the AI copilot. It lives in `investigation_engine/`.
 
 ### Session Lifecycle
 
@@ -1621,7 +1431,7 @@ class InvestigationSession(BaseModel):
 ### Context Assembly
 
 ```python
-# investigation-engine/context_builder.py
+# investigation_engine/copilot/context_builder.py
 
 class InvestigationContextBuilder:
     MAX_CONTEXT_TOKENS = 3000
@@ -1660,9 +1470,9 @@ Investigator: "Why is account C123 flagged?"
 POST /api/investigation/sessions/{id}/copilot
         │
         ▼
-investigation-engine/context_builder.py
+investigation_engine/copilot/context_builder.py
   ├─ Fetch account summary from Neo4j
-  ├─ Fetch SHAP explanation from PostgreSQL
+  ├─ Fetch SHAP explanation from file-based outputs
   ├─ Fetch fraud ring memberships from Neo4j
   ├─ Fetch top transactions from PostgreSQL
   └─ Fetch 2-hop network summary from Neo4j
@@ -1695,7 +1505,7 @@ Ollama is a local LLM inference server with an OpenAI-compatible API. MuleNetX u
 ### Docker Configuration
 
 ```yaml
-# docker/docker-compose.yml
+# docker/compose/docker-compose.yml
 
 ollama:
   image: ollama/ollama:latest
@@ -2244,16 +2054,6 @@ CREATE TABLE risk_scores (
     computed_at     TIMESTAMP DEFAULT NOW()
 );
 
-CREATE TABLE shap_values (
-    id              BIGSERIAL PRIMARY KEY,
-    account_id      VARCHAR(50) REFERENCES accounts(account_id),
-    pipeline_run_id UUID REFERENCES pipeline_runs(run_id),
-    base_value      FLOAT NOT NULL,
-    prediction      FLOAT NOT NULL,
-    feature_impacts JSONB NOT NULL,
-    computed_at     TIMESTAMP DEFAULT NOW()
-);
-
 CREATE TABLE investigation_sessions (
     session_id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     investigator_id     VARCHAR(100) NOT NULL,
@@ -2337,8 +2137,12 @@ RETURN count(a) AS community_size,
 
 ## 33. Docker Architecture
 
+The authoritative Compose configuration is `docker/compose/docker-compose.yml`.
+It provisions PostgreSQL, Neo4j with Graph Data Science, Redis, and the
+backend. The core pipeline does not require Ollama or the dashboard.
+
 ```yaml
-# docker/docker-compose.yml
+# docker/compose/docker-compose.yml
 
 version: '3.9'
 
@@ -2347,22 +2151,22 @@ services:
     image: postgres:16-alpine
     environment:
       POSTGRES_DB: mulenetx
-      POSTGRES_USER: mulenetx
-      POSTGRES_PASSWORD: mulenetx_dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database_framework/postgres/migrations:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mulenetx"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d mulenetx"]
       interval: 10s
 
   neo4j:
     image: neo4j:5.15-community
     environment:
-      NEO4J_AUTH: none
-      NEO4JLABS_PLUGINS: '["graph-data-science", "apoc"]'
+      NEO4J_AUTH: neo4j/password
+      NEO4JLABS_PLUGINS: '["graph-data-science"]'
     volumes:
       - neo4j_data:/data
       - ./docker/neo4j/neo4j.conf:/conf/neo4j.conf
@@ -2377,13 +2181,13 @@ services:
   backend:
     build:
       context: .
-      dockerfile: docker/backend.Dockerfile
+      dockerfile: docker/backend/Dockerfile
     environment:
       NEO4J_URI: bolt://neo4j:7687
       POSTGRES_URI: postgresql+asyncpg://mulenetx:mulenetx_dev@postgres:5432/mulenetx
       OLLAMA_URL: http://ollama:11434
     volumes:
-      - ./ml-engine/models:/app/ml-engine/models
+      - ./ml_engine/models:/app/ml_engine/models
     ports:
       - "8000:8000"
     depends_on:
@@ -2420,7 +2224,7 @@ volumes:
 ### Multi-Stage Backend Build
 
 ```dockerfile
-# docker/backend.Dockerfile
+# docker/backend/Dockerfile
 
 FROM python:3.11-slim AS builder
 WORKDIR /build
@@ -2431,9 +2235,9 @@ FROM python:3.11-slim AS runtime
 WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY backend/ ./backend/
-COPY intelligence-core/ ./intelligence-core/
-COPY investigation-engine/ ./investigation-engine/
-COPY ml-engine/ ./ml-engine/
+COPY intelligence_core/ ./intelligence_core/
+COPY investigation_engine/ ./investigation_engine/
+COPY ml_engine/ ./ml_engine/
 
 EXPOSE 8000
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
@@ -2447,7 +2251,11 @@ Multi-stage separation reduces the final image size by ~60% by excluding build-t
 
 ### Supported Datasets
 
-**PaySim (Primary)**: Synthetic financial transaction dataset generated using agent-based simulation of real mobile money transactions. 6.36M transactions, 11 columns, 0.13% fraud rate. Widely used in AML research.
+**PaySim (Primary)**: Synthetic financial transaction dataset generated using
+agent-based simulation of real mobile money transactions. The full dataset is
+6.36M transactions with 11 columns and an approximately 0.13% fraud rate.
+Phase 2 defaults to a 10,000-row development sample; the raw CSV is not
+tracked and must be supplied locally.
 
 **Custom AML Dataset Support**: `datasets/aml/` provides a base class for ingesting custom datasets with configurable field mapping:
 
@@ -2473,7 +2281,7 @@ class AMLDatasetSchemaMapper:
 
 ```
 Total transactions:          6,362,620
-Total unique accounts:       ~6.35 million
+Total unique accounts:       9,073,900 sender/receiver accounts
   - Customer accounts (C):   ~2.2 million
   - Merchant accounts (M):   ~4.1 million
 Fraud transactions:          8,213  (0.13%)
@@ -2510,7 +2318,7 @@ The `isFlaggedFraud` field (the simulation's own rule-based detector) flags only
 ### Temporal Train/Validation/Test Split
 
 ```python
-# ml-engine/evaluate.py
+# ml_engine/train_model.py
 
 def create_evaluation_splits(X, y):
     """
@@ -2520,17 +2328,12 @@ def create_evaluation_splits(X, y):
     Random splits leak future information into training — always use temporal splits
     for time-series fraud data.
 
-    Train:      steps 1–595   (80%)
-    Validation: steps 596–670 (12%)
-    Test:       steps 671–744  (8%)
+    Train:      accounts first seen at step <= 4
+    Validation: accounts first seen at step == 5
+    Test:       accounts first seen at step >= 6
     """
-    train_mask = X['step'] <= 595
-    val_mask   = (X['step'] > 595) & (X['step'] <= 670)
-    test_mask  = X['step'] > 670
-
-    return (X[train_mask], y[train_mask]), \
-           (X[val_mask],   y[val_mask]),   \
-           (X[test_mask],  y[test_mask])
+    # Implemented by graph_engine/point_in_time_features.py using
+    # snapshots at cutoffs 4, 5, and 7.
 ```
 
 ### Metrics Suite
@@ -2557,7 +2360,9 @@ def evaluate_model(model, X_test, y_test, threshold=0.5):
 
 **AUROC** — Probability that a randomly selected fraud account has a higher score than a randomly selected legitimate account. Range [0.5, 1.0]. Suitable for ranking quality assessment.
 
-**AUPRC** — More appropriate than AUROC for highly imbalanced datasets. A random classifier's AUPRC equals the fraud rate (0.0013). AUPRC of 0.81 vs baseline 0.0013 represents a significant lift.
+**AUPRC** — More appropriate than AUROC for highly imbalanced datasets. The
+recorded value for the current model is stored in
+`ml_engine/models/model_config.json`.
 
 **Precision at K** — Fraction of top-K scored accounts that are actually fraudulent. For operational use, precision at expected alert volume matters more than single-threshold precision.
 
@@ -2570,42 +2375,15 @@ def evaluate_model(model, X_test, y_test, threshold=0.5):
 ### Reported Results
 
 ```
-Model: XGBoost
-  n_estimators: 500, max_depth: 7, scale_pos_weight: 762
-Test period: PaySim steps 671–744
-
-Threshold-Independent:
-  AUROC:  0.9987
-  AUPRC:  0.8143
-
-Threshold = 0.5 (balanced):
-  Precision: 0.872
-  Recall:    0.791
-  F1:        0.829
-
-  Confusion Matrix:
-                  Predicted Neg  Predicted Pos
-  Actual Neg:       498,847         312
-  Actual Pos:           174         667
-
-Threshold = 0.3 (recall-optimized):
-  Precision: 0.751
-  Recall:    0.894
-  F1:        0.816
-
-Precision@K:
-  Precision@100:   0.97
-  Precision@500:   0.93
-  Precision@1000:  0.88
+The current recorded model configuration and metrics are in
+`ml_engine/models/model_config.json`. This README does not duplicate those
+experimental results in prose.
 ```
 
 ### Interpretation and Caveats
 
-The AUROC of 0.9987 is very high — a known characteristic of PaySim. The fraud pattern is relatively simple (only two transaction types, specific balance patterns) and the synthetic nature means fraud accounts have more distinct features than in real datasets.
-
-The AUPRC of 0.8143 is the more meaningful metric. Achieving 0.81 against a 0.0013 baseline demonstrates the system works correctly on its training distribution.
-
-**These metrics should not be used to claim production readiness.** Real financial transaction data has higher noise, more varied fraud patterns, concept drift, and data quality issues. Performance in production will be lower.
+These values describe the existing recorded experiment only. They should not be
+used to claim production readiness.
 
 ---
 
@@ -2613,35 +2391,11 @@ The AUPRC of 0.8143 is the more meaningful metric. Achieving 0.81 against a 0.00
 
 ### Global Feature Importance (Mean |SHAP|)
 
-```
-Rank  Feature                         Mean |SHAP|   Direction
-──────────────────────────────────────────────────────────────
-1     community_fraud_density          0.187        ↑ increases risk
-2     cash_out_ratio                   0.143        ↑
-3     flow_ratio                       0.131        ↑
-4     pagerank_score                   0.098        ↑ (context-dep)
-5     betweenness_centrality           0.087        ↑
-6     propagated_risk_score            0.076        ↑
-7     burst_score                      0.065        ↑
-8     max_sent_amount                  0.058        ↑
-9     avg_neighbor_risk                0.052        ↑
-10    account_age_days                 0.047        ↓ decreases risk
-11    fraud_ring_membership            0.044        ↑
-12    transaction_count_out            0.039        context-dep
-13    night_transaction_ratio          0.031        ↑
-14    net_flow                         0.028        ↑ if negative
-15    unique_recipients_count          0.025        ↑
-```
-
-**Key observations:**
-
-- `community_fraud_density` is the most important feature. Community composition is a stronger predictor than any individual account behavior.
-- `betweenness_centrality` in the top 5 confirms the value of graph topology over transactional features alone.
-- `account_age_days` is the strongest risk-decreasing feature — established accounts are less likely to be fraud.
-
-### SHAP Interaction Effects
-
-The interaction SHAP analysis reveals a strong positive interaction between `community_fraud_density` and `cash_out_ratio`: an account with both high community fraud density AND high cash-out ratio receives a disproportionately high score compared to either feature alone. This multiplicative effect is captured by the XGBoost tree structure.
+Feature importance is generated by `ml_engine/shap_explainer.py` from the
+current frozen model and written to
+`datasets/global_shap_importance.csv` and
+`ml_engine/models/global_shap_importance.json`. No fixed ranking or interaction
+result is claimed here.
 
 ---
 
@@ -2929,7 +2683,8 @@ Qwen 2.5 7B occasionally produces confident-sounding but factually wrong narrati
 Several queries were initially written with f-string interpolation for convenience. This is both a Cypher injection risk and a performance problem (Neo4j cannot cache query plans for queries with embedded literals). Parameterized queries must be enforced from the start.
 
 **Lesson 6: PaySim metrics are flattering; real metrics will be lower.**
-AUROC of 0.9987 on PaySim created a false sense of model quality. The same architecture on a more realistic AML dataset (fraud distributed across all transaction types, noisier labels) typically produces AUROC in the 0.87–0.94 range. PaySim validates system correctness, not production performance.
+The recorded PaySim experiment should not be generalized to production AML
+data. PaySim validates the implemented pipeline, not production performance.
 
 ---
 
@@ -3037,20 +2792,19 @@ docker compose up -d
 # 3. Wait for services to be healthy (~3–5 min on first run)
 docker compose ps
 
-# 4. Download and ingest PaySim dataset
-python scripts/ingest.py --dataset paysim
+# 4. Run the Phase 2 data/graph pipeline (requires datasets/raw/paysim.csv)
+python scripts/run_phase2_pipeline.py
 
-# 5. Build the graph and run analytics
-python scripts/run_analytics.py
+# 5. Verify the generated temporal feature dataset
+python scripts/verify_temporal_leakage.py
 
-# 6. Train the model
-python scripts/train_model.py
+# 6. Use the frozen model artifacts under ml_engine/models/
 
 # 7. Open the dashboard
 open http://localhost:5173
 ```
 
-After completing all pipeline stages (~140 minutes for full PaySim), the dashboard will show scored accounts, detected fraud rings, and a fully operational AI copilot.
+After the validated feature and scoring artifacts are present, the dashboard exposes persisted risk, SHAP explanations, and graph data. Advanced ring-analysis and copilot modules are not required for the Review 1 core path.
 
 ---
 

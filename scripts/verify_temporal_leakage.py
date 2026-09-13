@@ -1,62 +1,98 @@
 import os
 import sys
+
 import pandas as pd
+from sqlalchemy import text
+
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from backend.database.session import engine
 
-df_feat = pd.read_csv("datasets/account_features.csv")
 
-# Query actual count of transactions for each account per cutoff from PostgreSQL
-q = """
-WITH acct_txs AS (
-    SELECT name_orig AS acct, step, amount FROM transactions
-    UNION ALL
-    SELECT name_dest AS acct, step, amount FROM transactions
-)
-SELECT 
-    acct AS account_id,
-    count(case when step <= 4 then 1 end) AS count_step4,
-    count(case when step <= 5 then 1 end) AS count_step5,
-    count(case when step <= 7 then 1 end) AS count_step7,
-    coalesce(sum(case when step <= 4 then amount else 0 end), 0) AS total_amt_step4,
-    count(*) AS total_count_all_steps
-FROM acct_txs
-GROUP BY acct;
-"""
-tx_counts = pd.read_sql(q, con=engine)
-check_df = pd.merge(df_feat, tx_counts, on="account_id")
+SPLIT_CUTOFFS = {"train": 4, "val": 5, "test": 7}
 
-# Train check: cutoff 4
-train_check = check_df[check_df["split"] == "train"]
-train_diff = int((train_check["transaction_count"] != train_check["count_step4"]).sum())
-train_leak = int((train_check["transaction_count"] > train_check["count_step4"]).sum())
 
-# Val check: cutoff 5
-val_check = check_df[check_df["split"] == "val"]
-val_diff = int((val_check["transaction_count"] != val_check["count_step5"]).sum())
-val_leak = int((val_check["transaction_count"] > val_check["count_step5"]).sum())
+def expected_account_counts(cutoff: int) -> pd.DataFrame:
+    query = text(
+        """
+        WITH acct_steps AS (
+            SELECT name_orig AS account_id, step, is_fraud FROM transactions
+            UNION ALL
+            SELECT name_dest AS account_id, step, is_fraud FROM transactions
+        )
+        SELECT
+            account_id,
+            COUNT(CASE WHEN step <= :cutoff THEN 1 END) AS feature_count,
+            MAX(CASE WHEN step > :cutoff AND is_fraud = 1 THEN 1 ELSE 0 END)
+                AS expected_target
+        FROM acct_steps
+        GROUP BY account_id
+        """
+    )
+    return pd.read_sql(query, con=engine, params={"cutoff": cutoff})
 
-# Test check: cutoff 7
-test_check = check_df[check_df["split"] == "test"]
-test_diff = int((test_check["transaction_count"] != test_check["count_step7"]).sum())
-test_leak = int((test_check["transaction_count"] > test_check["count_step7"]).sum())
 
-print("=== POINT-IN-TIME VERIFICATION RESULTS ===")
-print(f"Train accounts ({len(train_check)}): differences from step<=4: {train_diff}, leaks: {train_leak}")
-print(f"Val accounts   ({len(val_check)}): differences from step<=5: {val_diff}, leaks: {val_leak}")
-print(f"Test accounts  ({len(test_check)}): differences from step<=7: {test_diff}, leaks: {test_leak}")
+def main() -> None:
+    feature_path = os.path.join(PROJECT_ROOT, "datasets", "account_features.csv")
+    feature_df = pd.read_csv(feature_path)
+    required = {
+        "account_id",
+        "first_step",
+        "cutoff_step",
+        "split",
+        "transaction_count",
+        "target",
+        "max_observed_step",
+        "target_eligible",
+        "target_censored",
+    }
+    missing = required.difference(feature_df.columns)
+    if missing:
+        raise AssertionError(f"Missing target validation columns: {sorted(missing)}")
 
-# Check accounts with later transactions
-later_txs = train_check[train_check["total_count_all_steps"] > train_check["count_step4"]]
-print(f"Train accounts having subsequent transactions in steps 5-7: {len(later_txs)}")
-if len(later_txs) > 0:
-    s = later_txs.iloc[0]
-    print(f"Sample account {s['account_id']}: step<=4 count = {s['count_step4']}, feature count = {s['transaction_count']}, all-steps count = {s['total_count_all_steps']}")
+    failures = []
+    for split, cutoff in SPLIT_CUTOFFS.items():
+        rows = feature_df[feature_df["split"] == split].copy()
+        if not (rows["cutoff_step"] == cutoff).all():
+            failures.append(f"{split}: incorrect cutoff metadata")
+        if split == "test" and not ((rows["first_step"] >= 6) & (rows["first_step"] <= 7)).all():
+            failures.append("test: account outside first_step 6..7")
+        censored = rows[~rows["target_eligible"]]
+        evaluated = rows[rows["target_eligible"]].copy()
+        if not (rows["target_censored"] == ~rows["target_eligible"]).all():
+            failures.append(f"{split}: inconsistent censoring metadata")
+        if not (evaluated["max_observed_step"] > evaluated["cutoff_step"]).all():
+            failures.append(f"{split}: improperly censored evaluated row")
 
-assert train_leak == 0, "Temporal leakage detected in train set!"
-assert val_leak == 0, "Temporal leakage detected in val set!"
-assert test_leak == 0, "Temporal leakage detected in test set!"
-print("\nTEMPORAL LEAKAGE AUDIT: ALL CHECKS PASSED (ZERO LEAKAGE).")
+        expected = expected_account_counts(cutoff).set_index("account_id")
+        checked = rows.set_index("account_id").join(expected, how="left")
+        if checked["expected_target"].isna().any():
+            failures.append(f"{split}: account missing from transaction metadata")
+            continue
+        if (checked["target"] != checked["expected_target"]).any():
+            failures.append(f"{split}: target differs from cutoff-relative future fraud")
+        if ((checked["target"] == 1) & (checked["expected_target"] != 1)).any():
+            failures.append(f"{split}: target=1 without qualifying future fraud")
+        if ((checked["target"] == 0) & (checked["expected_target"] == 1)).any():
+            failures.append(f"{split}: target=0 despite qualifying future fraud")
+        if (checked["transaction_count"] != checked["feature_count"]).any():
+            failures.append(f"{split}: feature transaction count exceeds cutoff")
+
+        positives = int(evaluated["target"].sum())
+        negatives = int(len(evaluated) - positives)
+        print(
+            f"{split}: evaluated={len(evaluated)}, positive={positives}, "
+            f"negative={negatives}, censored={len(censored)}"
+        )
+
+    if failures:
+        raise AssertionError("; ".join(failures))
+
+    print("TARGET VALIDATION: PASS")
+    print("FEATURE LEAKAGE VALIDATION: PASS")
+
+
+if __name__ == "__main__":
+    main()

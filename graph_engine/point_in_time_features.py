@@ -21,7 +21,7 @@ CANONICAL_FEATURES_PATH = os.path.join(
 
 
 def get_account_temporal_metadata() -> pd.DataFrame:
-    """Queries PostgreSQL for each account's first appearance step and ground-truth fraud label."""
+    """Queries PostgreSQL for each account's first appearance step."""
     query = """
     WITH acct_steps AS (
         SELECT name_orig AS acct, step, is_fraud FROM transactions
@@ -30,12 +30,34 @@ def get_account_temporal_metadata() -> pd.DataFrame:
     )
     SELECT 
         acct AS account_id, 
-        min(step) AS first_step,
-        max(is_fraud) AS label
+        min(step) AS first_step
     FROM acct_steps
     GROUP BY acct;
     """
     return pd.read_sql(query, con=engine)
+
+
+def get_future_fraud_targets(cutoff: int) -> pd.DataFrame:
+    """Return future-fraud targets for accounts after the supplied cutoff."""
+    query = f"""
+    WITH acct_steps AS (
+        SELECT name_orig AS account_id, step, is_fraud FROM transactions
+        UNION ALL
+        SELECT name_dest AS account_id, step, is_fraud FROM transactions
+    )
+    SELECT
+        account_id,
+        MAX(CASE WHEN step > {cutoff} AND is_fraud = 1 THEN 1 ELSE 0 END) AS target
+    FROM acct_steps
+    GROUP BY account_id
+    """
+    return pd.read_sql(query, con=engine)
+
+
+def get_max_observed_step() -> int:
+    """Return the maximum transaction step in the loaded dataset."""
+    query = "SELECT COALESCE(MAX(step), 0) AS max_step FROM transactions"
+    return int(pd.read_sql(query, con=engine).iloc[0]["max_step"])
 
 
 def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
@@ -55,7 +77,16 @@ def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
     proj_query = f"""
     CALL gds.graph.project.cypher(
         '{graph_name}',
-        'MATCH (a:Account) RETURN id(a) AS id, ["Account"] AS labels',
+        'MATCH (a:Account)
+         WHERE EXISTS {{
+             MATCH (a)-[t:TRANSFER]->()
+             WHERE t.step <= {cutoff}
+         }}
+         OR EXISTS {{
+             MATCH ()-[t:TRANSFER]->(a)
+             WHERE t.step <= {cutoff}
+         }}
+         RETURN id(a) AS id, ["Account"] AS labels',
         'MATCH (s:Account)-[t:TRANSFER]->(r:Account) WHERE t.step <= {cutoff} RETURN id(s) AS source, id(r) AS target, "TRANSFER" AS type'
     )
     """
@@ -69,15 +100,7 @@ def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
     """)
     df_pr = pd.DataFrame([dict(r) for r in pr_res])
 
-    # 2. Degree Centrality on cutoff graph
-    deg_res = neo4j_client.execute(f"""
-    CALL gds.degree.stream('{graph_name}')
-    YIELD nodeId, score
-    RETURN gds.util.asNode(nodeId).account_id AS account_id, score AS degree
-    """)
-    df_deg = pd.DataFrame([dict(r) for r in deg_res])
-
-    # 3. Betweenness Centrality on cutoff graph
+    # 2. Betweenness Centrality on cutoff graph
     bw_res = neo4j_client.execute(f"""
     CALL gds.betweenness.stream('{graph_name}')
     YIELD nodeId, score
@@ -85,7 +108,7 @@ def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
     """)
     df_bw = pd.DataFrame([dict(r) for r in bw_res])
 
-    # 4. Louvain Community Detection on cutoff graph
+    # 3. Louvain Community Detection on cutoff graph
     louv_res = neo4j_client.execute(f"""
     CALL gds.louvain.stream('{graph_name}')
     YIELD nodeId, communityId
@@ -96,9 +119,17 @@ def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
     # Clean up projection
     neo4j_client.execute(f"CALL gds.graph.drop('{graph_name}', false)")
 
-    # 5. Point-in-time transactional metrics (WHERE t.step <= cutoff)
+    # 4. Point-in-time transactional metrics (WHERE t.step <= cutoff)
     tx_query = f"""
     MATCH (a:Account)
+    WHERE EXISTS {{
+        MATCH (a)-[t:TRANSFER]->()
+        WHERE t.step <= {cutoff}
+    }}
+    OR EXISTS {{
+        MATCH ()-[t:TRANSFER]->(a)
+        WHERE t.step <= {cutoff}
+    }}
     OPTIONAL MATCH (a)-[out:TRANSFER]->(r:Account)
     WHERE out.step <= {cutoff}
     WITH a,
@@ -141,7 +172,6 @@ def compute_snapshot_features(cutoff: int) -> pd.DataFrame:
 
     # Merge topological and transactional metrics
     df_merged = df_tx.merge(df_pr, on="account_id", how="left")
-    df_merged = df_merged.merge(df_deg, on="account_id", how="left")
     df_merged = df_merged.merge(df_bw, on="account_id", how="left")
     df_merged = df_merged.merge(df_louv, on="account_id", how="left")
 
@@ -160,9 +190,14 @@ def build_point_in_time_dataset(output_path: Optional[str] = None) -> pd.DataFra
     print("Building leak-free point-in-time feature dataset...")
     meta_df = get_account_temporal_metadata()
 
+    max_step = get_max_observed_step()
     train_accounts = set(meta_df[meta_df["first_step"] <= 4]["account_id"])
     val_accounts = set(meta_df[meta_df["first_step"] == 5]["account_id"])
-    test_accounts = set(meta_df[meta_df["first_step"] >= 6]["account_id"])
+    test_accounts = set(
+        meta_df[
+            (meta_df["first_step"] >= 6) & (meta_df["first_step"] <= 7)
+        ]["account_id"]
+    )
 
     print(f"Partition counts: Train={len(train_accounts)}, Val={len(val_accounts)}, Test={len(test_accounts)}")
 
@@ -187,9 +222,26 @@ def build_point_in_time_dataset(output_path: Optional[str] = None) -> pd.DataFra
     test_feat["split"] = "test"
     test_feat["cutoff_step"] = 7
 
-    # Combine partitions
+    # Combine partitions and assign future fraud strictly after each cutoff.
     all_feat = pd.concat([train_feat, val_feat, test_feat], ignore_index=True)
-    all_feat = all_feat.merge(meta_df[["account_id", "first_step", "label"]], on="account_id", how="left")
+    all_feat = all_feat.merge(
+        meta_df[["account_id", "first_step"]],
+        on="account_id",
+        how="left",
+    )
+    future_targets = {
+        cutoff: get_future_fraud_targets(cutoff).set_index("account_id")["target"]
+        for cutoff in (4, 5, 7)
+    }
+    all_feat["target"] = [
+        int(future_targets[int(cutoff)].get(account_id, 0))
+        for account_id, cutoff in zip(
+            all_feat["account_id"], all_feat["cutoff_step"]
+        )
+    ]
+    all_feat["max_observed_step"] = max_step
+    all_feat["target_eligible"] = all_feat["max_observed_step"] > all_feat["cutoff_step"]
+    all_feat["target_censored"] = ~all_feat["target_eligible"]
 
     # Column ordering
     feature_cols = [
@@ -210,7 +262,10 @@ def build_point_in_time_dataset(output_path: Optional[str] = None) -> pd.DataFra
         "unique_senders",
         "fan_out",
         "fan_in",
-        "label"
+        "target",
+        "max_observed_step",
+        "target_eligible",
+        "target_censored"
     ]
     all_feat = all_feat[feature_cols]
 
