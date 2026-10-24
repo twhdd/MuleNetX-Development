@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-10-18T04:05:16Z",
+  "host": {
+    "platform": "macOS-26.2-arm64-arm-64bit",
+    "cpu_count": 8,
+    "python": "3.12.13",
+    "memory_bytes": 8589934592,
+    "docker_vm_cpus": 8,
+    "docker_vm_memory_bytes": 4109803520,
+    "reference_hardware": false
+  },
+  "dataset": {
+    "dataset_id": "2c5e127a-f87e-47ad-83c6-864da150a38e",
+    "reference_slice": false,
+    "records_accepted": 48317,
+    "graph_nodes": 51457,
+    "graph_edges": 41114
+  },
+  "pipeline_durations_s": {
+    "ingestion_duration": 0.605,
+    "profiling_duration": 0.869,
+    "graph_build_duration": 17.44,
+    "analytics_duration": 24.603,
+    "feature_generation_duration": 1.872,
+    "training_duration": 78.883,
+    "scoring_duration": 4.337,
+    "ring_analysis_duration": 0.014
+  },
+  "results": {
+    "account_lookup": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 3.2,
+      "p95_ms": 3.5,
+      "max_ms": 6.9,
+      "target_ms": 500,
+      "met": true
+    },
+    "risk_retrieval": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 4.7,
+      "p95_ms": 8.3,
+      "max_ms": 13.5,
+      "target_ms": 750,
+      "met": true
+    },
+    "neighborhood_2hop": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 81.7,
+      "p95_ms": 121.8,
+      "max_ms": 198.7,
+      "target_ms": 1500,
+      "met": true
+    },
+    "transaction_page": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 4.2,
+      "p95_ms": 5.1,
+      "max_ms": 13.6,
+      "target_ms": 750,
+      "met": true
+    },
+    "case_retrieval": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 3.0,
+      "p95_ms": 5.8,
+      "max_ms": 12.6,
+      "target_ms": 500,
+      "met": true
+    },
+    "health": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 1.2,
+      "p95_ms": 1.7,
+      "max_ms": 2.3,
+      "target_ms": 250,
+      "met": true
+    },
+    "readiness": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 6.0,
+      "p95_ms": 10.5,
+      "max_ms": 23.3,
+      "target_ms": 250,
+      "met": true
+    },
+    "path_query": {
+      "samples": 60,
+      "errors": 0,
+      "p50_ms": 784.7,
+      "p95_ms": 982.3,
+      "max_ms": 1041.2,
+      "target_ms": 5000,
+      "met": true
+    }
+  }
+}

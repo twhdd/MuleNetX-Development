@@ -1,0 +1,10 @@
+{
+  "description": "SRS §27.4 / AT-PROP-03: undirected path C – A – B with pre-propagation scores C = 0.50, A = 0.49, B = 0.48. Only C is a source (≥ 0.50). A: d = 1, contribution 0.25, final 0.49 + 0.025 = 0.5150000 (HIGH). B: d = 2, contribution 0.50/3 = 0.1666667, final 0.48 + 0.01666667 = 0.4966667 (MEDIUM). C: receives nothing (no other source), final 0.5000000.",
+  "edges": [["C", "A"], ["A", "B"]],
+  "pre": {"C": "0.50", "A": "0.49", "B": "0.48"},
+  "expected": {
+    "A": {"propagated": "0.2500000", "final": "0.5150000", "tier": "HIGH"},
+    "B": {"propagated": "0.1666667", "final": "0.4966667", "tier": "MEDIUM"},
+    "C": {"propagated": "0.0000000", "final": "0.5000000", "tier": "HIGH"}
+  }
+}

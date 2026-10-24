@@ -1,0 +1,32 @@
+{
+  "version": "intents-v1",
+  "description": "Deterministic intent table (SRS §21.3): lowercase keyword lists checked in priority order against the lowercased question; the first intent with a keyword hit wins. Without a hit, the referenced resource decides: ring_id → RING_SUMMARY, case_id → CASE_SUMMARY, account_id → ACCOUNT_SUMMARY; otherwise UNSUPPORTED. An intent whose subject is not referenced is UNSUPPORTED.",
+  "priority": ["RISK_EXPLANATION", "MONEY_FLOW", "TEMPORAL_CONTEXT", "GRAPH_CONTEXT", "RING_SUMMARY", "CASE_SUMMARY", "ACCOUNT_SUMMARY"],
+  "keywords": {
+    "RISK_EXPLANATION": ["why", "risk", "score", "explain", "shap", "flagged", "tier", "rule"],
+    "MONEY_FLOW": ["money flow", "flow", "path", "where did", "send", "sent", "receive", "received", "transfer", "cash out"],
+    "TEMPORAL_CONTEXT": ["when", "timing", "time", "burst", "dormant", "dormancy", "velocity", "pattern", "motif", "pass-through", "pass through"],
+    "GRAPH_CONTEXT": ["graph", "network", "connected", "neighbour", "neighbor", "centrality", "pagerank", "betweenness", "community"],
+    "RING_SUMMARY": ["ring", "candidate", "group"],
+    "CASE_SUMMARY": ["case", "finding", "findings", "investigation"],
+    "ACCOUNT_SUMMARY": ["summary", "summarize", "summarise", "overview", "who is", "tell me about", "account"]
+  },
+  "subject": {
+    "ACCOUNT_SUMMARY": "account_id",
+    "RISK_EXPLANATION": "account_id",
+    "GRAPH_CONTEXT": "account_id",
+    "TEMPORAL_CONTEXT": "account_id",
+    "MONEY_FLOW": "account_id",
+    "RING_SUMMARY": "ring_id",
+    "CASE_SUMMARY": "case_id"
+  },
+  "sections": {
+    "ACCOUNT_SUMMARY": ["account", "risk_assessment", "transactions", "graph", "community", "findings"],
+    "RISK_EXPLANATION": ["account", "risk_assessment", "shap", "temporal"],
+    "GRAPH_CONTEXT": ["account", "graph", "community", "risk_assessment"],
+    "TEMPORAL_CONTEXT": ["account", "temporal", "motifs", "transactions"],
+    "MONEY_FLOW": ["account", "money_flow", "transactions"],
+    "RING_SUMMARY": ["ring", "motifs"],
+    "CASE_SUMMARY": ["findings", "account"]
+  }
+}

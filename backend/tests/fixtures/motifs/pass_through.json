@@ -1,0 +1,40 @@
+{
+ "note": "A\u2192B\u2192C\u2192D with gaps 300 s and 600 s. Only the maximal 3-hop sequence is reported; B\u2192C\u2192D and the 2-hop prefix are contiguous subsequences. confidence = (1 + mean(1-300/900, 1-600/900) + min(1,4/3)) / 3 = (1 + 0.5 + 1) / 3",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "B",
+   "dst": "C",
+   "ts": 300,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "C",
+   "dst": "D",
+   "ts": 900,
+   "amount": "100.00"
+  }
+ ],
+ "expected": [
+  {
+   "type": "RAPID_PASS_THROUGH",
+   "anchor": "A",
+   "txs": [
+    "t1",
+    "t2",
+    "t3"
+   ],
+   "confidence": "0.8333333",
+   "order_ambiguous": false,
+   "temporal_match": "0.5000000"
+  }
+ ]
+}

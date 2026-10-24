@@ -1,0 +1,69 @@
+{
+ "note": "Negative cases: a 901 s gap (no pass-through); fan-in sources spread so that no 3600 s window holds 3 counterparties; a 5-hop chain spanning 86,401 s (no layered movement); no motif may merge across windows.",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "B",
+   "dst": "C",
+   "ts": 901,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "P",
+   "dst": "D",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t4",
+   "src": "Q",
+   "dst": "D",
+   "ts": 2000,
+   "amount": "100.00"
+  },
+  {
+   "id": "t5",
+   "src": "R",
+   "dst": "D",
+   "ts": 3601,
+   "amount": "100.00"
+  },
+  {
+   "id": "t6",
+   "src": "L1",
+   "dst": "L2",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t7",
+   "src": "L2",
+   "dst": "L3",
+   "ts": 30000,
+   "amount": "100.00"
+  },
+  {
+   "id": "t8",
+   "src": "L3",
+   "dst": "L4",
+   "ts": 60000,
+   "amount": "100.00"
+  },
+  {
+   "id": "t9",
+   "src": "L4",
+   "dst": "L5",
+   "ts": 86401,
+   "amount": "100.00"
+  }
+ ],
+ "expected": []
+}

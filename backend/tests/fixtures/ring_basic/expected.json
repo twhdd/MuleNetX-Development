@@ -1,0 +1,231 @@
+{
+ "description": "PLAN \u00a78 ring_basic: one community of five accounts meeting the candidate threshold, a two-member community (not scored) and a quiet three-member community (scored below 0.50, not persisted). Expected values computed by hand from SRS \u00a79.2\u2013\u00a79.3.",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "R1",
+   "dst": "R2",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "R2",
+   "dst": "R3",
+   "ts": 600,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "R3",
+   "dst": "R1",
+   "ts": 1200,
+   "amount": "100.00"
+  },
+  {
+   "id": "t5",
+   "src": "R3",
+   "dst": "R4",
+   "ts": 1800,
+   "amount": "50.00"
+  },
+  {
+   "id": "t4",
+   "src": "R4",
+   "dst": "R5",
+   "ts": 7200,
+   "amount": "50.00"
+  },
+  {
+   "id": "t6",
+   "src": "R5",
+   "dst": "X",
+   "ts": 9000,
+   "amount": "40.00"
+  },
+  {
+   "id": "t7",
+   "src": "Y",
+   "dst": "R1",
+   "ts": 0,
+   "amount": "500.00"
+  },
+  {
+   "id": "q1",
+   "src": "Q1",
+   "dst": "Q2",
+   "ts": 0,
+   "amount": "10.00"
+  },
+  {
+   "id": "q2",
+   "src": "Q2",
+   "dst": "Q3",
+   "ts": 86400,
+   "amount": "10.00"
+  },
+  {
+   "id": "p1",
+   "src": "P1",
+   "dst": "P2",
+   "ts": 0,
+   "amount": "10.00"
+  }
+ ],
+ "final_scores": {
+  "R1": "0.9000000",
+  "R2": "0.8000000",
+  "R3": "0.6000000",
+  "R4": "0.3000000",
+  "R5": "0.2000000",
+  "X": "0.1000000",
+  "Y": "0.9500000",
+  "Q1": "0.1000000",
+  "Q2": "0.1000000",
+  "Q3": "0.1000000",
+  "P1": "0.9000000",
+  "P2": "0.9000000"
+ },
+ "pagerank_pct": {
+  "R1": 0.9,
+  "R2": 0.5,
+  "R3": 0.6,
+  "R4": 0.2,
+  "R5": 0.1,
+  "X": 0.3,
+  "Y": 0.4,
+  "Q1": 0.0,
+  "Q2": 0.1,
+  "Q3": 0.2,
+  "P1": 0.5,
+  "P2": 0.5
+ },
+ "betweenness_pct": {
+  "R1": 0.4,
+  "R2": 0.7,
+  "R3": 0.6,
+  "R4": 0.3,
+  "R5": 0.2,
+  "X": 0.0,
+  "Y": 0.0,
+  "Q1": 0.0,
+  "Q2": 0.1,
+  "Q3": 0.0,
+  "P1": 0.0,
+  "P2": 0.0
+ },
+ "communities": {
+  "c-ring": [
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5"
+  ],
+  "c-pair": [
+   "P1",
+   "P2"
+  ],
+  "c-quiet": [
+   "Q1",
+   "Q2",
+   "Q3"
+  ]
+ },
+ "expected_candidate": {
+  "community_id": "c-ring",
+  "H": "0.6000000",
+  "D": "0.8750000",
+  "C": "0.8000000",
+  "community_temporal_density": "0.8000000",
+  "M": "0.6818182",
+  "score": "0.7369318",
+  "class": "POTENTIAL_FRAUD_RING_CANDIDATE",
+  "working": {
+   "H": "3 suspicious of 5",
+   "D": "internal t1,t2,t3,t5 suspicious (350) / internal t1..t5 (400)",
+   "C": "mean(max PR pct 0.9, max betweenness pct 0.7)",
+   "community_temporal_density": "t1,t2,t3,t5 lie in [0,3600) with \u2265 3; t4 alone \u2192 4/5",
+   "M": "member-sourced transactions on qualifying paths from members: t1,t2,t3 (300) / member-sourced outgoing t1..t6 (440)",
+   "score": "0.35\u00b70.6 + 0.25\u00b70.875 + 0.15\u00b70.8 + 0.15\u00b70.8 + 0.10\u00b70.6818182 = 0.73693182"
+  }
+ },
+ "expected_quiet": {
+  "community_id": "c-quiet",
+  "H": "0.0000000",
+  "D": "0.0000000",
+  "score_below": "0.50"
+ },
+ "expected_ring": {
+  "members": [
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5"
+  ],
+  "ring_size": 5,
+  "constituent": [
+   "t1",
+   "t2",
+   "t3",
+   "t5",
+   "t4"
+  ],
+  "start": 0,
+  "end": 7200,
+  "temporal_span_seconds": 7200,
+  "features": {
+   "RSD": "0.8000000",
+   "RC": "0.8214286",
+   "TC": "0.6000000",
+   "MFC": "0.8750000",
+   "CS": "0.4500000",
+   "FI": "0.0000000",
+   "FO": "0.0000000",
+   "CP": "1",
+   "SPD": "0.5000000"
+  },
+  "eligible_path_count": 18,
+  "qualifying_path_count": 9,
+  "paths_truncated": false,
+  "scope": [
+   "R1",
+   "R2",
+   "R3",
+   "R4",
+   "R5",
+   "Y"
+  ],
+  "suspicious_flow": "800.00",
+  "eligible_flow": "900.00",
+  "risk": {
+   "member_risk": "0.5600000",
+   "transaction_risk": "0.8000000",
+   "topology_signal": "0.3900000",
+   "temporal_signal": "0.3333333",
+   "money_flow_signal": "0.8888889"
+  },
+  "ring_risk_score": "0.5780000",
+  "risk_tier": "HIGH",
+  "temporal_indicators": {
+   "RAPID_PASS_THROUGH": 1,
+   "FAN_IN": 0,
+   "FAN_OUT": 0,
+   "CIRCULAR_FLOW": 1,
+   "LAYERED_MOVEMENT": 0,
+   "BURST_ACTIVITY": 0
+  },
+  "working": {
+   "motifs": "RAPID [t7,t1,t2] (has Y), RAPID [t2,t3] (R1,R2,R3), CIRCULAR [t1,t2,t3], LAYERED [t1,t2,t5,t4,t6] (has X), LAYERED [t7,t1,t2,t5,t4] (has Y)",
+   "RSD": "t1,t2,t3,t5 suspicious of 5 constituent",
+   "RC": "(0.9+0.8+0.6)/(0.9+0.8+0.6+0.3+0.2)=2.3/2.8",
+   "TC": "motifs wholly constituent: RAPID [t2,t3], CIRCULAR [t1,t2,t3] \u2192 {t1,t2,t3}/5",
+   "paths": "scope = members \u222a {Y}; 18 eligible, 9 qualifying (R1R2, R1R2R3, R3R1, R2R3R1, YR1, R2R3, R3R1R2, YR1R2, YR1R2R3)",
+   "MFC": "top-3 path flows YR1R2R3 700, YR1R2 600, YR1 500 \u2192 {t7,t1,t2}=700 / suspicious flow {t1,t2,t3,t7}=800",
+   "CS": "mean(PR mean 0.46, betweenness mean 0.44)",
+   "SPD": "9/18",
+   "risk": "0.25\u00b70.56 + 0.20\u00b70.8 + 0.20\u00b70.39 + 0.20\u00b70.3333333 + 0.15\u00b70.8888889 = 0.577999995 \u2192 0.5780000 (HIGH \u2265 0.50)"
+  }
+ }
+}

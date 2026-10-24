@@ -1,0 +1,139 @@
+{
+  "description": "One row per rejection code of SRS \u00a77.3 plus three valid rows (ordinals 1, 10, 11). Hand-computed.",
+  "records_seen": 11,
+  "records_accepted": 3,
+  "records_rejected": 8,
+  "counts": {
+    "MISSING_COLUMN": 1,
+    "TYPE_ERROR": 1,
+    "INVALID_ACCOUNT_ID": 1,
+    "INVALID_AMOUNT": 1,
+    "INVALID_TIMESTAMP": 1,
+    "INVALID_TYPE": 1,
+    "INVALID_LABEL": 1,
+    "FIELD_TOO_LONG": 1
+  },
+  "samples": {
+    "MISSING_COLUMN": [
+      2
+    ],
+    "TYPE_ERROR": [
+      3
+    ],
+    "INVALID_ACCOUNT_ID": [
+      4
+    ],
+    "INVALID_AMOUNT": [
+      5
+    ],
+    "INVALID_TIMESTAMP": [
+      6
+    ],
+    "INVALID_TYPE": [
+      7
+    ],
+    "INVALID_LABEL": [
+      8
+    ],
+    "FIELD_TOO_LONG": [
+      9
+    ]
+  },
+  "accepted_refs": [
+    "0000000001",
+    "0000000010",
+    "0000000011"
+  ],
+  "accounts": {
+    "C1": "CUSTOMER",
+    "C2": "CUSTOMER",
+    "C3": "CUSTOMER",
+    "M3": "MERCHANT"
+  },
+  "amounts": {
+    "0000000001": "100.000000",
+    "0000000010": "9.123457",
+    "0000000011": "0.000000"
+  },
+  "fraud": {
+    "0000000001": false,
+    "0000000010": true,
+    "0000000011": false
+  },
+  "profile": {
+    "row_counts": {
+      "seen": 11,
+      "accepted": 3,
+      "rejected": 8,
+      "rejected_by_reason": {
+        "MISSING_COLUMN": 1,
+        "TYPE_ERROR": 1,
+        "INVALID_ACCOUNT_ID": 1,
+        "INVALID_AMOUNT": 1,
+        "INVALID_TIMESTAMP": 1,
+        "INVALID_TYPE": 1,
+        "INVALID_LABEL": 1,
+        "FIELD_TOO_LONG": 1
+      },
+      "duplicate": 0
+    },
+    "distinct_accounts_by_type": {
+      "CUSTOMER": 3,
+      "MERCHANT": 1
+    },
+    "distinct_timestamps": 3,
+    "rows_per_timestamp": {
+      "min": 1,
+      "median": 1.0,
+      "max": 1
+    },
+    "fraction_accounts_sender_and_receiver": 0.5,
+    "out_degree_quantiles": {
+      "p0": 0.0,
+      "p25": 0.75,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "p100": 1.0
+    },
+    "in_degree_quantiles": {
+      "p0": 0.0,
+      "p25": 0.75,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "p100": 1.0
+    },
+    "max_directed_chain_length": 3,
+    "max_directed_chain_length_bound": 10,
+    "directed_simple_paths_length_ge_2": 3,
+    "path_enumeration": {
+      "max_depth": 10,
+      "expansion_budget": 1000000,
+      "truncated": false
+    },
+    "fraud_label_prevalence_by_type": {
+      "CASH_OUT": {
+        "transactions": 1,
+        "fraud": 0,
+        "prevalence": 0.0
+      },
+      "PAYMENT": {
+        "transactions": 1,
+        "fraud": 1,
+        "prevalence": 1.0
+      },
+      "TRANSFER": {
+        "transactions": 1,
+        "fraud": 0,
+        "prevalence": 0.0
+      }
+    },
+    "fraud_component_size_histogram": {
+      "2": 1
+    },
+    "accounts_with_7_active_days": 0
+  }
+}

@@ -1,0 +1,68 @@
+:root {
+  /* ground and neutrals: cool ink, tinted, never pure grey */
+  --ink-0: #07090c;
+  --ink-1: #0c1015;
+  --ink-2: #121821;
+  --ink-3: #18202b;
+  --line: #1c2430;
+  --line-strong: #2b3644;
+  --text-1: #e6ebf0;
+  --text-2: #aab5c1;
+  --text-3: #808d9b;
+  --text-inverse: #07090c;
+
+  /* the risk ramp: the only saturated colour system (heatmap, nodes, bars) */
+  --ramp-0: #123524;
+  --ramp-1: #1f6b45;
+  --ramp-2: #3f9a5c;
+  --ramp-3: #9bb83a;
+  --ramp-4: #e0a52a;
+  --ramp-5: #e3692f;
+  --ramp-6: #d43c2f;
+  --ramp-7: #a3172b;
+
+  /* tier text: brightened ramp hues that hold 4.5:1 on --ink-0 */
+  --tier-low: #63c283;
+  --tier-medium: #e9b64d;
+  --tier-high: #f2814f;
+  --tier-critical: #ff6474;
+  --tier-none: var(--text-3);
+
+  /* status is told by icon, border and weight; the ramp is reserved for risk (OWN-WORLD) */
+  --ok: #e6ebf0;
+  --warn: #f4f6f8;
+  --warn-line: #8a96a3;
+  --warn-ground: rgba(230, 235, 240, 0.06);
+  --danger: #ff6474;
+  --focus: #f4f6f8;
+  --selection: rgba(230, 235, 240, 0.22);
+
+  --font-ui: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-entity: "Source Serif 4 Variable", "Source Serif 4", Georgia, serif;
+  --font-data: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.8125rem;
+  --fs-md: 0.875rem;
+  --fs-lg: 1rem;
+  --fs-xl: 1.1875rem;
+  --fs-2xl: 1.4375rem;
+  --fs-3xl: 1.75rem;
+  --fs-4xl: 2.25rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  --rail-w: 64px;
+  --banner-h: 44px;
+  --radius: 2px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-fast: 150ms;
+  --t-med: 220ms;
+  --shadow-overlay: 0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4);
+}

@@ -1,0 +1,40 @@
+{
+ "note": "A\u2192D, B\u2192D, C\u2192D at 0, 600, 1200 s: one fan-in anchored at D. confidence = (1 + (1-1200/3600) + 4/4) / 3 = 8/9",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "D",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "B",
+   "dst": "D",
+   "ts": 600,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "C",
+   "dst": "D",
+   "ts": 1200,
+   "amount": "100.00"
+  }
+ ],
+ "expected": [
+  {
+   "type": "FAN_IN",
+   "anchor": "D",
+   "txs": [
+    "t1",
+    "t2",
+    "t3"
+   ],
+   "confidence": "0.8888889",
+   "order_ambiguous": false,
+   "temporal_match": "0.6666667"
+  }
+ ]
+}

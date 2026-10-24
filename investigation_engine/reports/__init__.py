@@ -1,1 +1,0 @@
-"""Investigation report generation."""

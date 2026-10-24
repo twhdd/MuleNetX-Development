@@ -1,0 +1,86 @@
+.stages {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 2px;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: var(--sp-3);
+  background: var(--ink-1);
+  border-top: 3px solid var(--line-strong);
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  min-width: 0;
+}
+.stage strong {
+  color: var(--text-2);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+.done {
+  border-top-color: var(--text-1);
+}
+.done strong {
+  color: var(--text-1);
+}
+.running {
+  border-top-style: dashed;
+  border-top-color: var(--text-1);
+  background: var(--ink-2);
+}
+.running strong {
+  color: var(--text-1);
+}
+.failed {
+  border-top-color: var(--danger);
+}
+.failed strong {
+  color: var(--danger);
+}
+.drop {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--sp-3);
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2px;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--ink-1);
+}
+.metric span:first-child {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.json {
+  margin: 0;
+  padding: var(--sp-3) var(--sp-4);
+  max-height: 420px;
+  overflow: auto;
+  background: var(--ink-0);
+  color: var(--text-2);
+  font-family: var(--font-data);
+  font-size: var(--fs-xs);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1100px) {
+  .stages {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

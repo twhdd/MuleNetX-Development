@@ -1,0 +1,49 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.grid {
+  display: grid;
+  grid-template-columns: 84px repeat(24, minmax(10px, 1fr));
+  gap: 2px;
+  font-size: 0.6875rem;
+}
+.hour {
+  color: var(--text-3);
+  text-align: center;
+  font-family: var(--font-data);
+}
+.day {
+  color: var(--text-2);
+  font-family: var(--font-data);
+  white-space: nowrap;
+  padding-right: var(--sp-1);
+  line-height: 16px;
+}
+.cell {
+  height: 16px;
+  background: var(--ink-2);
+  outline: 1px solid transparent;
+}
+.cell:hover {
+  outline-color: var(--text-1);
+}
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+.scale {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.scale span {
+  display: inline-block;
+  width: 14px;
+  height: 10px;
+}

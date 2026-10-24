@@ -1,0 +1,65 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding: 0 var(--sp-5) var(--sp-6);
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--sp-4);
+  align-items: start;
+}
+.tableWrap {
+  overflow-x: auto;
+}
+.muted {
+  color: var(--text-3);
+}
+.small {
+  font-size: var(--fs-xs);
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+@media (max-width: 1100px) {
+  .grid2,
+  .grid3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .body {
+    padding: 0 var(--sp-3) var(--sp-5);
+  }
+}
+/* flex children default to min-width: auto; a wide table inside would otherwise widen the page on phones */
+.body > *,
+.stack > * {
+  min-width: 0;
+}

@@ -1,0 +1,79 @@
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px dashed var(--text-1);
+  background: var(--ink-1);
+  font-size: var(--fs-sm);
+  max-width: 110ch;
+}
+.banner svg {
+  flex: none;
+  margin-top: 2px;
+}
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+}
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+}
+.segmented button {
+  height: 32px;
+  padding: 0 var(--sp-3);
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.segmented button[aria-pressed="true"] {
+  background: var(--text-1);
+  color: var(--text-inverse);
+}
+.targets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  max-width: 640px;
+}
+.target {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+.target[aria-pressed="true"] {
+  border-color: var(--text-1);
+  color: var(--text-1);
+  background: var(--ink-3);
+}
+.baseline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--ink-1);
+}
+.stat span:first-child {
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.stat .num {
+  font-size: var(--fs-lg);
+}

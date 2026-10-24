@@ -1,0 +1,50 @@
+{
+ "note": "Two parallel A\u2192B transactions then B\u2192C: two distinct maximal pass-throughs (different transaction sets).",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "B",
+   "dst": "C",
+   "ts": 100,
+   "amount": "100.00"
+  }
+ ],
+ "expected": [
+  {
+   "type": "RAPID_PASS_THROUGH",
+   "anchor": "A",
+   "txs": [
+    "t1",
+    "t3"
+   ],
+   "confidence": "0.9629630",
+   "order_ambiguous": false,
+   "temporal_match": "0.8888889"
+  },
+  {
+   "type": "RAPID_PASS_THROUGH",
+   "anchor": "A",
+   "txs": [
+    "t2",
+    "t3"
+   ],
+   "confidence": "0.9629630",
+   "order_ambiguous": false,
+   "temporal_match": "0.8888889"
+  }
+ ]
+}

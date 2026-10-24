@@ -1,0 +1,610 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-18T03:58:41.259330+00:00",
+  "title": "Design System: MuleNetX",
+  "extensions": {
+    "colorMeta": {
+      "ramp-0": {
+        "role": "primary",
+        "displayName": "Deep Pine (risk ramp stop 0)",
+        "canonical": "#123524",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-1": {
+        "role": "primary",
+        "displayName": "Moss (risk ramp stop 0.15)",
+        "canonical": "#1f6b45",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-2": {
+        "role": "primary",
+        "displayName": "Field Green (risk ramp stop 0.3)",
+        "canonical": "#3f9a5c",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-3": {
+        "role": "primary",
+        "displayName": "Chartreuse (risk ramp stop 0.45)",
+        "canonical": "#9bb83a",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-4": {
+        "role": "primary",
+        "displayName": "Amber (risk ramp stop 0.6)",
+        "canonical": "#e0a52a",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-5": {
+        "role": "primary",
+        "displayName": "Vermilion (risk ramp stop 0.75)",
+        "canonical": "#e3692f",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-6": {
+        "role": "primary",
+        "displayName": "Signal Red (risk ramp stop 0.88)",
+        "canonical": "#d43c2f",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ramp-7": {
+        "role": "primary",
+        "displayName": "Oxblood (risk ramp stop 1)",
+        "canonical": "#a3172b",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#9bb83a",
+          "#e0a52a",
+          "#e3692f",
+          "#d43c2f",
+          "#a3172b"
+        ]
+      },
+      "ink-0": {
+        "role": "neutral",
+        "displayName": "Ink Black",
+        "canonical": "#07090c",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "ink-1": {
+        "role": "neutral",
+        "displayName": "Rail Ink",
+        "canonical": "#0c1015",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Raised Ink",
+        "canonical": "#121821",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Selected Ink",
+        "canonical": "#18202b",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#1c2430",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Strong Hairline",
+        "canonical": "#2b3644",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "text-1": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#e6ebf0",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#aab5c1",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "text-3": {
+        "role": "neutral",
+        "displayName": "Slate",
+        "canonical": "#808d9b",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "text-inverse": {
+        "role": "neutral",
+        "displayName": "Ink on Paper",
+        "canonical": "#07090c",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "no-signal": {
+        "role": "neutral",
+        "displayName": "No Signal",
+        "canonical": "#151b23",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "warn": {
+        "role": "neutral",
+        "displayName": "Warn",
+        "canonical": "#f4f6f8",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "warn-line": {
+        "role": "neutral",
+        "displayName": "Warn Line",
+        "canonical": "#8a96a3",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus",
+        "canonical": "#f4f6f8",
+        "tonalRamp": [
+          "#07090c",
+          "#0c1015",
+          "#121821",
+          "#18202b",
+          "#1c2430",
+          "#2b3644",
+          "#808d9b",
+          "#e6ebf0"
+        ]
+      },
+      "tier-low": {
+        "role": "secondary",
+        "displayName": "Tier Low",
+        "canonical": "#63c283",
+        "tonalRamp": [
+          "#123524",
+          "#1f6b45",
+          "#3f9a5c",
+          "#63c283"
+        ]
+      },
+      "tier-medium": {
+        "role": "secondary",
+        "displayName": "Tier Medium",
+        "canonical": "#e9b64d",
+        "tonalRamp": [
+          "#9bb83a",
+          "#e0a52a",
+          "#e9b64d"
+        ]
+      },
+      "tier-high": {
+        "role": "secondary",
+        "displayName": "Tier High",
+        "canonical": "#f2814f",
+        "tonalRamp": [
+          "#e3692f",
+          "#f2814f"
+        ]
+      },
+      "tier-critical": {
+        "role": "secondary",
+        "displayName": "Tier Critical",
+        "canonical": "#ff6474",
+        "tonalRamp": [
+          "#d43c2f",
+          "#a3172b",
+          "#ff6474"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Danger (single hazard hue)",
+        "canonical": "#ff6474",
+        "tonalRamp": [
+          "#a3172b",
+          "#d43c2f",
+          "#ff6474"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "score": {
+        "displayName": "Score",
+        "purpose": "Headline final score beside the tier."
+      },
+      "entity-display": {
+        "displayName": "Entity Display",
+        "purpose": "Account title in the workspace (cases 1.75rem, inspector 1.1875rem)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page headers."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default interface text; tables and controls at 0.8125rem."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, table heads, hints, banner, legends."
+      },
+      "evidence-label": {
+        "displayName": "Evidence Label",
+        "purpose": "Mandated evidence classes and role tag."
+      },
+      "entity": {
+        "displayName": "Entity",
+        "purpose": "Inline account and case identifiers, brand wordmark."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Amounts, IDs, hashes, timestamps, lineage values."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-overlay",
+        "value": "0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.4)",
+        "purpose": "Floating elements only: lineage popover, rail tooltip, mobile sheet, graph overlays."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All state transitions."
+      },
+      {
+        "name": "t-fast",
+        "value": "150ms",
+        "purpose": "Hover, border, colour and row background changes."
+      },
+      {
+        "name": "t-med",
+        "value": "220ms",
+        "purpose": "Graph node opacity changes."
+      },
+      {
+        "name": "graph-reveal",
+        "value": "opacity 0 to 1; nodes 420ms, edges 520ms; delay hop x 110ms (+60ms for edges)",
+        "purpose": "The one authored motion: money spreads outward ring by ring from the focus account."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation and transition durations forced to 1ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "640px"
+      },
+      {
+        "name": "triage-single",
+        "value": "820px"
+      },
+      {
+        "name": "banner-compact",
+        "value": "900px"
+      },
+      {
+        "name": "split-stack",
+        "value": "1100px"
+      },
+      {
+        "name": "triage-two",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button",
+      "kind": "button",
+      "refersTo": "button",
+      "description": "Default action: raised ink, strong hairline, square.",
+      "html": "<button class=\"ds-btn\">Explore</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--line-strong,#2b3644);border-radius:2px;background:var(--ink-2,#121821);color:var(--text-1,#e6ebf0);font:500 0.8125rem 'Inter Variable',Inter,system-ui,sans-serif;cursor:pointer;transition:background 150ms cubic-bezier(0.16,1,0.3,1),border-color 150ms cubic-bezier(0.16,1,0.3,1)}.ds-btn:hover{background:var(--ink-3,#18202b);border-color:var(--text-3,#808d9b)}.ds-btn:active{background:var(--line,#1c2430)}.ds-btn:focus-visible{outline:2px solid var(--focus,#f4f6f8);outline-offset:2px}"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one forward action in a region.",
+      "html": "<button class=\"ds-btn-primary\">Open workspace</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--text-1,#e6ebf0);border-radius:2px;background:var(--text-1,#e6ebf0);color:var(--text-inverse,#07090c);font:500 0.8125rem 'Inter Variable',Inter,system-ui,sans-serif;cursor:pointer;transition:background 150ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary:hover{background:#fff;border-color:#fff}.ds-btn-primary:active{background:var(--text-2,#aab5c1)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#f4f6f8);outline-offset:2px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Low-emphasis action; borderless until hover.",
+      "html": "<button class=\"ds-btn-ghost\">Sign out</button>",
+      "css": ".ds-btn-ghost{display:inline-flex;align-items:center;height:32px;padding:0 12px;border:1px solid transparent;border-radius:2px;background:transparent;color:var(--text-2,#aab5c1);font:500 0.8125rem 'Inter Variable',Inter,system-ui,sans-serif;cursor:pointer;transition:background 150ms,border-color 150ms,color 150ms}.ds-btn-ghost:hover{background:var(--ink-2,#121821);border-color:var(--line,#1c2430);color:var(--text-1,#e6ebf0)}.ds-btn-ghost:focus-visible{outline:2px solid var(--focus,#f4f6f8);outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Ink field, strong hairline, near-white focus ring.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Account ID</span><input class=\"ds-input\" placeholder=\"C00092\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px}.ds-field-label{color:var(--text-2,#aab5c1);font:500 0.75rem 'Inter Variable',Inter,system-ui,sans-serif}.ds-input{height:32px;padding:0 12px;border:1px solid var(--line-strong,#2b3644);border-radius:2px;background:var(--ink-0,#07090c);color:var(--text-1,#e6ebf0);font:0.8125rem 'Inter Variable',Inter,system-ui,sans-serif;transition:border-color 150ms}.ds-input::placeholder{color:var(--text-3,#808d9b)}.ds-input:hover{border-color:var(--text-3,#808d9b)}.ds-input:focus-visible{outline:none;border-color:var(--focus,#f4f6f8);box-shadow:0 0 0 1px var(--focus,#f4f6f8)}"
+    },
+    {
+      "name": "Evidence Labels",
+      "kind": "chip",
+      "refersTo": "evidence-label",
+      "description": "Mandated evidence classes told apart by treatment, not hue; SYNTHETIC DATA is the one danger exception.",
+      "html": "<div class=\"ds-ev-row\"><span class=\"ds-ev ds-ev-fact\">FACT</span><span class=\"ds-ev ds-ev-signal\">ANALYTICAL SIGNAL</span><span class=\"ds-ev ds-ev-model\">MODEL OUTPUT</span><span class=\"ds-ev ds-ev-cand\">ANALYTICAL CANDIDATE</span><span class=\"ds-ev ds-ev-sim\">HYPOTHETICAL SIMULATION</span><span class=\"ds-ev ds-ev-find\">INVESTIGATOR FINDING</span><span class=\"ds-ev ds-ev-ai\">AI INTERPRETATION</span><span class=\"ds-ev ds-ev-syn\">SYNTHETIC DATA</span></div>",
+      "css": ".ds-ev-row{display:flex;flex-wrap:wrap;gap:8px}.ds-ev{display:inline-flex;align-items:center;height:20px;padding:0 7px;border:1px solid var(--line-strong,#2b3644);border-radius:2px;color:var(--text-1,#e6ebf0);font:600 0.6875rem 'Inter Variable',Inter,system-ui,sans-serif;letter-spacing:0.04em;white-space:nowrap}.ds-ev-fact{border-color:var(--text-2,#aab5c1)}.ds-ev-signal{color:var(--text-2,#aab5c1)}.ds-ev-model{background:var(--ink-3,#18202b);border-color:var(--ink-3,#18202b)}.ds-ev-cand{border:3px double var(--text-2,#aab5c1);height:22px}.ds-ev-sim{border-style:dashed;border-color:var(--text-1,#e6ebf0);font-style:italic}.ds-ev-find{background:var(--text-1,#e6ebf0);border-color:var(--text-1,#e6ebf0);color:var(--text-inverse,#07090c)}.ds-ev-ai{border-style:dotted;border-color:var(--text-1,#e6ebf0);font-style:italic}.ds-ev-syn{color:var(--danger,#ff6474);border-color:var(--danger,#ff6474)}"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Flat rail-ink container with a hairline border and ruled head.",
+      "html": "<section class=\"ds-panel\"><header class=\"ds-panel-head\"><span class=\"ds-panel-title\">Components</span></header><div class=\"ds-panel-body\">Signal coverage 100%</div></section>",
+      "css": ".ds-panel{border:1px solid var(--line,#1c2430);background:var(--ink-1,#0c1015);color:var(--text-2,#aab5c1);font:0.875rem 'Inter Variable',Inter,system-ui,sans-serif}.ds-panel-head{display:flex;align-items:center;min-height:44px;padding:8px 16px;border-bottom:1px solid var(--line,#1c2430)}.ds-panel-title{color:var(--text-1,#e6ebf0);font-weight:600}.ds-panel-body{padding:16px}"
+    },
+    {
+      "name": "Nav Rail",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "64px icon rail; active item gets selected ink and a 2px leading bar.",
+      "html": "<nav class=\"ds-rail\"><a class=\"ds-nav\" aria-current=\"page\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\"><path d=\"M12 14l4-4\"/><path d=\"M3.34 19a10 10 0 1 1 17.32 0\"/></svg></a><a class=\"ds-nav\" href=\"#\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m21 21-4.3-4.3\"/></svg></a></nav>",
+      "css": ".ds-rail{display:flex;flex-direction:column;align-items:center;gap:2px;width:64px;padding:8px 0;background:var(--ink-1,#0c1015);border-right:1px solid var(--line,#1c2430)}.ds-nav{position:relative;display:grid;place-items:center;width:44px;height:40px;border-radius:2px;color:var(--text-3,#808d9b);transition:color 150ms,background 150ms}.ds-nav:hover,.ds-nav:focus-visible{color:var(--text-1,#e6ebf0);background:var(--ink-2,#121821)}.ds-nav[aria-current=page]{color:var(--text-1,#e6ebf0);background:var(--ink-3,#18202b)}.ds-nav[aria-current=page]::before{content:'';position:absolute;left:-10px;top:8px;bottom:8px;width:2px;background:var(--text-1,#e6ebf0)}"
+    },
+    {
+      "name": "Signal Matrix Row",
+      "kind": "custom",
+      "refersTo": "signal-cell",
+      "description": "Signature: serif italic ID, tier word, six risk-ramp cells.",
+      "html": "<table class=\"ds-mx\"><tr class=\"ds-mx-row\" aria-selected=\"true\"><td class=\"ds-mx-who\"><span class=\"ds-mx-ref\">C00092</span><span class=\"ds-mx-tier\">CRITICAL</span></td><td class=\"ds-mx-c\" style=\"background:#a3172b;color:#eef2f5\">1.00</td><td class=\"ds-mx-c\" style=\"background:#e3692f;color:#07090c\">.82</td><td class=\"ds-mx-c\" style=\"background:#d6b02c;color:#07090c\">.59</td><td class=\"ds-mx-c\" style=\"background:#e3692f;color:#07090c\">.80</td><td class=\"ds-mx-c\" style=\"background:#5fa64f;color:#eef2f5\">.38</td><td class=\"ds-mx-c ds-mx-final\" style=\"background:#e3692f;color:#07090c\">.83</td></tr></table>",
+      "css": ".ds-mx{border-collapse:separate;border-spacing:0 2px;background:var(--ink-1,#0c1015)}.ds-mx-who{height:34px;padding:0 8px 0 12px;background:var(--ink-3,#18202b);box-shadow:inset 2px 0 0 var(--text-1,#e6ebf0)}.ds-mx-ref{display:block;font:italic 560 0.875rem 'Source Serif 4 Variable','Source Serif 4',Georgia,serif;color:var(--text-1,#e6ebf0);line-height:1.15}.ds-mx-tier{display:block;font:600 0.6875rem 'Inter Variable',Inter,sans-serif;letter-spacing:0.03em;color:var(--tier-critical,#ff6474)}.ds-mx-c{width:44px;height:34px;text-align:center;font:0.6875rem 'JetBrains Mono Variable','JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums;border-left:2px solid var(--ink-1,#0c1015);transition:filter 150ms}.ds-mx-row:hover .ds-mx-c{filter:brightness(1.12)}.ds-mx-final{width:52px;font-weight:700;font-size:0.75rem}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Ledger",
+    "overview": "MuleNetX is an instrument read for hours in a dim operations room. The ground is ink-black and every neutral is tinted cool, so the screen recedes and only the evidence glows. A single risk ramp (deep green through chartreuse, amber and vermilion to oxblood) is the one saturated colour in the system. It runs continuously from the signal-matrix heatmap cells into the graph's node fills and the score bars, so the eye can follow one account's risk across every view without a legend.\n\nEverything else is told by treatment rather than hue: border style, fill, weight and typeface. Entities (accounts, cases) are named in Source Serif 4 italic, like names in a ledger. Interface text is Inter, and machine facts (amounts, IDs, timestamps, scores) are JetBrains Mono with tabular figures. The density is high and the forms are square, ruled with 1px hairlines and flat at rest. Shadows appear only on things that float above the page.\n\nMotion is spent once. When a neighbourhood graph loads, the money spreads outward from the focus account ring by ring. Everything else changes state in 150 to 220ms without choreography.",
+    "keyCharacteristics": [
+      "Ink-black, cool-tinted ground; no pure greys.",
+      "One saturated colour system: the risk ramp, used only to mean risk.",
+      "Status and evidence distinguished by border, fill and weight, never by a new hue.",
+      "Three typefaces with strict jobs: serif italic for entities, sans for interface, mono for data.",
+      "Square 2px corners, 1px hairline rules, flat surfaces, shadows on overlays only.",
+      "One authored motion: the graph reveal, 110ms per hop."
+    ],
+    "rules": [
+      {
+        "name": "The One Ramp Rule",
+        "body": "The risk ramp is the only saturated colour system, and it means risk and nothing else. Never borrow a ramp hue for status, navigation, branding or emphasis.",
+        "section": "colors"
+      },
+      {
+        "name": "The Treatment, Not Hue Rule",
+        "body": "Status, staleness and evidence class are told apart by border style, fill and weight. Danger red is the one hazard exception, reserved for destruction, errors and synthetic data.",
+        "section": "colors"
+      },
+      {
+        "name": "The Continuous Signal Rule",
+        "body": "Any new view that shows a risk value colours it through the shared ramp function, so a value reads the same in a cell, a node and a bar.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Jobs Rule",
+        "body": "Serif italic names entities, Inter runs the interface, and mono shows data. A typeface never does another face's job. Mono is for amounts, IDs, timestamps and scores only, never for prose or headings.",
+        "section": "typography"
+      },
+      {
+        "name": "The Named Subject Rule",
+        "body": "Every account or case identifier, wherever it appears, is set in Source Serif 4 italic.",
+        "section": "typography"
+      },
+      {
+        "name": "The Overlay-Only Shadow Rule",
+        "body": "A surface casts a shadow only when it floats above the page. Panels, cards, buttons and rows stay flat, and selection is a tonal step plus a 2px text-1 bar on the leading edge.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do colour every risk value through the shared ramp (ramp-0 to ramp-7, Lab-interpolated), and use ink or near-white text on it according to the 0.38 to 0.80 band.",
+      "Do set every account and case ID in Source Serif 4 italic at weight 560.",
+      "Do set amounts, IDs, timestamps and scores in JetBrains Mono with tabular figures.",
+      "Do separate surfaces with ink steps and 1px hairlines (line or line-strong), and keep corners at 2px.",
+      "Do distinguish evidence classes and status by border style, fill and weight, and render every mandated evidence label verbatim.",
+      "Do mark selection with a tonal step and a 2px paper-white leading bar.",
+      "Do keep state transitions at 150ms (fast) or 220ms (medium) on cubic-bezier(0.16, 1, 0.3, 1), and honour reduced motion."
+    ],
+    "donts": [
+      "Don't use a ramp hue, or any new saturated hue, for status, staleness, navigation or decoration.",
+      "Don't use danger red for anything except destructive actions, errors and SYNTHETIC DATA.",
+      "Don't put shadows on panels, cards, buttons or rows. The overlay shadow belongs to floating elements only.",
+      "Don't round corners beyond 2px, except for status dots, the pulse and graph nodes.",
+      "Don't set prose, headings or labels in the mono face, or entity names in Inter.",
+      "Don't add a second choreographed motion. The ring-by-ring graph reveal is the only one."
+    ]
+  }
+}

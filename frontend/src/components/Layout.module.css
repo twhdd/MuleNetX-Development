@@ -1,0 +1,225 @@
+.shell {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  grid-template-rows: var(--banner-h) minmax(0, 1fr);
+  height: 100vh;
+  height: 100dvh;
+}
+.rail {
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) 0;
+  border-right: 1px solid var(--line);
+  background: var(--ink-1);
+  overflow-y: auto;
+  overflow-x: visible;
+}
+.mark {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--sp-2);
+}
+.group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+.navItem {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 40px;
+  border-radius: var(--radius);
+  color: var(--text-3);
+  transition: color var(--t-fast) var(--ease-out), background var(--t-fast) var(--ease-out);
+}
+.navItem:hover,
+.navItem:focus-visible {
+  color: var(--text-1);
+  background: var(--ink-2);
+}
+.navItem[aria-current="page"] {
+  color: var(--text-1);
+  background: var(--ink-3);
+}
+.navItem[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--text-1);
+}
+.tip {
+  position: fixed;
+  z-index: 50;
+  padding: 4px var(--sp-2);
+  border: 1px solid var(--line-strong);
+  background: var(--ink-3);
+  color: var(--text-1);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--shadow-overlay);
+}
+.spacer {
+  flex: 1;
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  min-width: 0;
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-1);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+.brand {
+  font-family: var(--font-entity);
+  font-style: italic;
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: 0;
+  margin-right: var(--sp-2);
+  white-space: nowrap;
+}
+.ctx {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  min-width: 0;
+  overflow: hidden;
+}
+.ctxItem {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  white-space: nowrap;
+}
+.ctxItem span:first-child {
+  color: var(--text-3);
+}
+.ctxItem .num {
+  color: var(--text-1);
+}
+.idle {
+  color: var(--warn);
+}
+.user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  white-space: nowrap;
+}
+.role {
+  padding: 2px 6px;
+  border: 1px solid var(--line-strong);
+  color: var(--text-2);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.main {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+}
+@media (max-width: 900px) {
+  .ctxOptional {
+    display: none;
+  }
+}
+.mobileBar,
+.sheet {
+  display: none;
+}
+@media (max-width: 640px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) 60px;
+  }
+  .rail {
+    display: none;
+  }
+  .banner {
+    flex-wrap: wrap;
+    gap: 2px var(--sp-3);
+    padding: 6px var(--sp-3);
+  }
+  .user {
+    gap: var(--sp-2);
+  }
+  .user > span:first-child {
+    display: none;
+  }
+  .ctx {
+    order: 3;
+    width: 100%;
+    gap: var(--sp-3);
+  }
+  .mobileBar {
+    grid-row: 3;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid var(--line);
+    background: var(--ink-1);
+  }
+  .mobileItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    border: 0;
+    background: none;
+    color: var(--text-3);
+    font-size: var(--fs-xs);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .mobileItem[aria-current="page"],
+  .mobileItem[aria-expanded="true"] {
+    color: var(--text-1);
+  }
+  .sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    z-index: 40;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    padding: var(--sp-3);
+    border-top: 1px solid var(--line-strong);
+    background: var(--ink-2);
+    box-shadow: var(--shadow-overlay);
+  }
+  .sheetItem {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    min-height: 44px;
+    padding: 0 var(--sp-3);
+    color: var(--text-1);
+    text-decoration: none;
+    font-size: var(--fs-sm);
+  }
+  .sheetItem[aria-current="page"] {
+    background: var(--ink-3);
+  }
+}

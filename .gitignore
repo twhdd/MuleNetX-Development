@@ -1,14 +1,46 @@
+# Environment and secrets
 .env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
 .venv/
-dashboard/node_modules/
-dashboard/dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.hypothesis/
+.coverage
+htmlcov/
+*.egg-info/
+junit*.xml
 
-datasets/raw/
-datasets/*.csv
+# Node / frontend
+node_modules/
+frontend/dist/
+frontend/coverage/
+frontend/playwright-report/
+frontend/test-results/
 
-**/__pycache__/
-*.pyc
+# Runtime data (staging uploads, model artifacts, datasets)
+staging/
+artifacts/
+data/
+*.csv
+!backend/tests/fixtures/**/*.csv
 
-ml_engine/predictions.csv
-ml_engine/models/*.pkl
-ml_engine/models/*.joblib
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+frontend/capture.tmp.mjs
+.impeccable/review/
+frontend/*.tsbuildinfo
+frontend/dist/
+frontend/*.tmp.mjs
+frontend/e2e/.data/
+frontend/test-results/
+frontend/playwright-report/
+backend/reports/

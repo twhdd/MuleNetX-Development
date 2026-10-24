@@ -1,0 +1,40 @@
+{
+ "note": "A\u2192B, A\u2192C, A\u2192D at 0, 1800, 3600 s: the window [t, t+3600] is inclusive. span 3600 \u2192 temporal 0 \u2192 confidence 2/3",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "A",
+   "dst": "C",
+   "ts": 1800,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "A",
+   "dst": "D",
+   "ts": 3600,
+   "amount": "100.00"
+  }
+ ],
+ "expected": [
+  {
+   "type": "FAN_OUT",
+   "anchor": "A",
+   "txs": [
+    "t1",
+    "t2",
+    "t3"
+   ],
+   "confidence": "0.6666667",
+   "order_ambiguous": false,
+   "temporal_match": "0.0000000"
+  }
+ ]
+}

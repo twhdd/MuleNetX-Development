@@ -1,0 +1,57 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 56px;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+}
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-2);
+}
+.name b {
+  color: var(--text-1);
+  font-weight: 500;
+}
+.axis {
+  position: relative;
+  height: 10px;
+}
+.axis::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--line-strong);
+}
+.bar {
+  position: absolute;
+  top: 1px;
+  height: 8px;
+}
+.up {
+  background: var(--ramp-5);
+}
+.down {
+  background: var(--ramp-2);
+}
+.val {
+  text-align: right;
+}
+.note {
+  margin-top: var(--sp-2);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}

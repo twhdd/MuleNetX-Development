@@ -1,0 +1,117 @@
+.page {
+  display: grid;
+  grid-template-columns: 372px minmax(0, 1fr) 360px;
+  height: 100%;
+  min-height: 560px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  border-right: 1px solid var(--line);
+  background: var(--ink-1);
+}
+.center {
+  background: var(--ink-0);
+}
+.right {
+  border-right: 0;
+  overflow-y: auto;
+}
+.colHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  min-height: 52px;
+  padding: var(--sp-2) var(--sp-4);
+  border-bottom: 1px solid var(--line);
+}
+.colHead h2 {
+  font-size: var(--fs-md);
+}
+.colSub {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+}
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: var(--sp-3);
+}
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-top: 1px solid var(--line);
+}
+.graph {
+  flex: 1;
+  min-height: 0;
+}
+.graphTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  min-width: 0;
+}
+.graphTitle .entity {
+  font-size: var(--fs-lg);
+}
+.truncated {
+  padding: 1px 6px;
+  border: 1px dashed var(--warn-line);
+  color: var(--warn);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+.emptyTeach {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  max-width: 56ch;
+  padding: var(--sp-7) var(--sp-6);
+  color: var(--text-2);
+}
+.emptyTeach h1 {
+  color: var(--text-1);
+  font-size: var(--fs-2xl);
+}
+.emptyTeach ol {
+  margin: 0;
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+@media (max-width: 1280px) {
+  .page {
+    grid-template-columns: 340px minmax(0, 1fr);
+    grid-template-rows: minmax(480px, 1fr) auto;
+  }
+  .right {
+    grid-column: 1 / -1;
+    border-top: 1px solid var(--line);
+  }
+}
+@media (max-width: 820px) {
+  .optional {
+    display: none;
+  }
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 420px auto;
+    height: auto;
+  }
+  .col {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .scroll {
+    max-height: 420px;
+  }
+}

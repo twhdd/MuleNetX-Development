@@ -1,0 +1,185 @@
+{
+ "description": "PLAN \u00a78 network_risk_counterexample: suspicious A=0.90, B=0.60, C=0.55; non-suspicious D=0.20; edges A\u2192D(100), B\u2192D(50), D\u2192B(30), D\u2192C(20); ring {A,B,C,D}. Qualifying paths A\u2192D\u2192B, A\u2192D\u2192C, B\u2192D\u2192C. Baseline flow 200, pairs 3, risk mass 2.05 (D excluded: not suspicious). Values computed by hand from SRS \u00a716A.9\u2013\u00a716A.14; see OQ-80 for the SRS 0.40 vs 0.4390244 inconsistency.",
+ "edges": [
+  [
+   "A",
+   "D",
+   "100"
+  ],
+  [
+   "B",
+   "D",
+   "50"
+  ],
+  [
+   "D",
+   "B",
+   "30"
+  ],
+  [
+   "D",
+   "C",
+   "20"
+  ]
+ ],
+ "scores": {
+  "A": "0.9000000",
+  "B": "0.6000000",
+  "C": "0.5500000",
+  "D": "0.2000000"
+ },
+ "members": [
+  "A",
+  "B",
+  "C",
+  "D"
+ ],
+ "baseline": {
+  "paths": [
+   [
+    "A",
+    "D",
+    "B"
+   ],
+   [
+    "A",
+    "D",
+    "C"
+   ],
+   [
+    "B",
+    "D",
+    "C"
+   ]
+  ],
+  "flow": "200",
+  "pairs": 3,
+  "risk_mass": "2.0500000"
+ },
+ "pool_order": [
+  [
+   "ACCOUNT_REMOVAL",
+   [
+    "A"
+   ]
+  ],
+  [
+   "ACCOUNT_REMOVAL",
+   [
+    "B"
+   ]
+  ],
+  [
+   "ACCOUNT_REMOVAL",
+   [
+    "C"
+   ]
+  ],
+  [
+   "INTERMEDIARY_REMOVAL",
+   [
+    "D"
+   ]
+  ],
+  [
+   "EDGE_REMOVAL",
+   [
+    "A>D"
+   ]
+  ],
+  [
+   "EDGE_REMOVAL",
+   [
+    "B>D"
+   ]
+  ],
+  [
+   "EDGE_REMOVAL",
+   [
+    "D>B"
+   ]
+  ],
+  [
+   "EDGE_REMOVAL",
+   [
+    "D>C"
+   ]
+  ]
+ ],
+ "candidates": {
+  "INTERMEDIARY_REMOVAL D": {
+   "flow_disruption_percentage": "1.0000000",
+   "normalized_path_disruption": "1.0000000",
+   "normalized_connectivity_disruption": "1.0000000",
+   "normalized_risk_reduction": "1.0000000",
+   "residual_network_risk": "0.0000000",
+   "normalized_intervention_cost": "0.3333333",
+   "intervention_score": "0.9666667"
+  },
+  "ACCOUNT_REMOVAL A": {
+   "flow_disruption_percentage": "0.6500000",
+   "normalized_path_disruption": "0.6666667",
+   "normalized_connectivity_disruption": "0.6666667",
+   "normalized_risk_reduction": "0.4390244",
+   "residual_network_risk": "0.5609756",
+   "normalized_intervention_cost": "0.3333333",
+   "intervention_score": "0.5689228"
+  },
+  "EDGE_REMOVAL A>D": {
+   "flow_disruption_percentage": "0.6500000",
+   "normalized_path_disruption": "0.6666667",
+   "normalized_connectivity_disruption": "0.6666667",
+   "normalized_risk_reduction": "0.4390244",
+   "residual_network_risk": "0.5609756",
+   "normalized_intervention_cost": "0.3333333",
+   "intervention_score": "0.5689228"
+  },
+  "ACCOUNT_REMOVAL B": {
+   "flow_disruption_percentage": "0.4000000",
+   "normalized_risk_reduction": "0.2926829",
+   "intervention_score": "0.4198374"
+  },
+  "ACCOUNT_REMOVAL C": {
+   "flow_disruption_percentage": "0.3500000",
+   "normalized_risk_reduction": "0.2682927",
+   "intervention_score": "0.3912399"
+  },
+  "EDGE_REMOVAL D>C": {
+   "flow_disruption_percentage": "0.3500000",
+   "normalized_risk_reduction": "0.2682927",
+   "intervention_score": "0.3912399"
+  },
+  "EDGE_REMOVAL B>D": {
+   "flow_disruption_percentage": "0.2500000",
+   "normalized_risk_reduction": "0.0000000",
+   "intervention_score": "0.1791667"
+  },
+  "EDGE_REMOVAL D>B": {
+   "flow_disruption_percentage": "0.1500000",
+   "normalized_risk_reduction": "0.0000000",
+   "intervention_score": "0.1341667"
+  }
+ },
+ "rank_groups": [
+  [
+   "INTERMEDIARY_REMOVAL D"
+  ],
+  [
+   "ACCOUNT_REMOVAL A",
+   "EDGE_REMOVAL A>D"
+  ],
+  [
+   "ACCOUNT_REMOVAL B"
+  ],
+  [
+   "ACCOUNT_REMOVAL C",
+   "EDGE_REMOVAL D>C"
+  ],
+  [
+   "EDGE_REMOVAL B>D"
+  ],
+  [
+   "EDGE_REMOVAL D>B"
+  ]
+ ]
+}

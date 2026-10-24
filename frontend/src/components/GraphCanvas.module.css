@@ -1,0 +1,155 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(158, 194, 255, 0.035), transparent 60%),
+    var(--ink-0);
+}
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+.svg:active {
+  cursor: grabbing;
+}
+.ring {
+  fill: none;
+  stroke: #5b6775;
+  stroke-width: 1;
+  stroke-dasharray: 3 6;
+}
+.edge {
+  stroke: #3a4757;
+  stroke-opacity: 0.4;
+  transition: stroke var(--t-fast) var(--ease-out), stroke-opacity var(--t-fast) var(--ease-out);
+}
+.edgeHot {
+  stroke-opacity: 1;
+}
+.edgeFocus {
+  stroke-opacity: 0.95;
+}
+.edgeDim {
+  stroke-opacity: 0.15;
+}
+.node {
+  cursor: pointer;
+  transition: opacity var(--t-med) var(--ease-out);
+  animation: reveal 420ms var(--ease-out) both;
+}
+.edge {
+  animation: reveal 520ms var(--ease-out) both;
+}
+/* the one authored motion: money spreads outward ring by ring from the focus account */
+@keyframes reveal {
+  from {
+    opacity: 0;
+  }
+}
+.node circle {
+  stroke: var(--ink-0);
+  stroke-width: 2;
+  transition: stroke var(--t-fast) var(--ease-out);
+}
+.node:hover circle,
+.node:focus-visible circle {
+  stroke: var(--text-1);
+}
+.node:focus-visible {
+  outline: none;
+}
+.dim {
+  opacity: 0.28;
+}
+.focusRing {
+  fill: none;
+  stroke: var(--text-1);
+  stroke-width: 1.5;
+}
+.selectRing {
+  fill: none;
+  stroke: var(--focus);
+  stroke-width: 2;
+}
+.label {
+  fill: var(--text-1);
+  font-family: var(--font-entity);
+  font-style: italic;
+  font-size: calc(12px / var(--k, 1));
+  paint-order: stroke;
+  stroke: var(--ink-0);
+  stroke-width: calc(4px / var(--k, 1));
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.hud {
+  position: absolute;
+  left: var(--sp-3);
+  bottom: var(--sp-3);
+  display: flex;
+  gap: var(--sp-3);
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+.controls {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: var(--sp-3);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.controls button {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line-strong);
+  background: var(--ink-1);
+  color: var(--text-2);
+  cursor: pointer;
+}
+.controls button:hover {
+  color: var(--text-1);
+  border-color: var(--text-3);
+}
+.tooltip {
+  position: absolute;
+  z-index: 5;
+  min-width: 200px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line-strong);
+  background: var(--ink-2);
+  box-shadow: var(--shadow-overlay);
+  font-size: var(--fs-xs);
+  pointer-events: none;
+}
+.tooltip strong {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-entity);
+  font-style: italic;
+  font-size: var(--fs-md);
+  font-weight: 560;
+}
+.tooltip dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 2px var(--sp-3);
+  margin: 0;
+}
+.tooltip dt {
+  color: var(--text-3);
+}
+.tooltip dd {
+  margin: 0;
+  font-family: var(--font-data);
+}

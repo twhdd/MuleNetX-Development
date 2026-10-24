@@ -1,0 +1,317 @@
+{
+  "description": "A -> B -> C, one transaction per hop (SRS \u00a727.4). Expected values computed by hand from SRS \u00a76.2, \u00a77.1.1, \u00a78.3.",
+  "ingestion": {
+    "records_seen": 2,
+    "records_accepted": 2,
+    "records_rejected": 0,
+    "records_duplicate": 0
+  },
+  "accounts": [
+    "CA",
+    "CB",
+    "CC"
+  ],
+  "transactions": [
+    {
+      "ref": "0000000001",
+      "source": "CA",
+      "destination": "CB",
+      "amount": "100.000000",
+      "timestamp": "2020-01-01T01:00:00Z",
+      "type": "TRANSFER",
+      "fraud_label": false
+    },
+    {
+      "ref": "0000000002",
+      "source": "CB",
+      "destination": "CC",
+      "amount": "50.000000",
+      "timestamp": "2020-01-01T02:00:00Z",
+      "type": "TRANSFER",
+      "fraud_label": false
+    }
+  ],
+  "profile": {
+    "row_counts": {
+      "seen": 2,
+      "accepted": 2,
+      "rejected": 0,
+      "rejected_by_reason": {},
+      "duplicate": 0
+    },
+    "distinct_accounts_by_type": {
+      "CUSTOMER": 3
+    },
+    "distinct_timestamps": 2,
+    "rows_per_timestamp": {
+      "min": 1,
+      "median": 1.0,
+      "max": 1
+    },
+    "fraction_accounts_sender_and_receiver": 0.3333333,
+    "out_degree_quantiles": {
+      "p0": 0.0,
+      "p25": 0.5,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "p100": 1.0
+    },
+    "in_degree_quantiles": {
+      "p0": 0.0,
+      "p25": 0.5,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p99": 1.0,
+      "p100": 1.0
+    },
+    "max_directed_chain_length": 2,
+    "max_directed_chain_length_bound": 10,
+    "directed_simple_paths_length_ge_2": 1,
+    "path_enumeration": {
+      "max_depth": 10,
+      "expansion_budget": 1000000,
+      "truncated": false
+    },
+    "fraud_label_prevalence_by_type": {
+      "TRANSFER": {
+        "transactions": 2,
+        "fraud": 0,
+        "prevalence": 0.0
+      }
+    },
+    "fraud_component_size_histogram": {},
+    "accounts_with_7_active_days": 0
+  },
+  "analytics": {
+    "note": "Hand-computed: PageRank solved exactly (damping 0.85, dangling C redistributed uniformly); betweenness Brandes normalized by (n-1)(n-2)=2; Louvain on path A-B(100)-C(50): one community maximizes modularity (Q=0 > -0.0556).",
+    "degree": {
+      "CA": [
+        1,
+        0,
+        1
+      ],
+      "CB": [
+        2,
+        1,
+        1
+      ],
+      "CC": [
+        1,
+        1,
+        0
+      ]
+    },
+    "pagerank": {
+      "CA": 0.18441678192715538,
+      "CB": 0.34117104656523745,
+      "CC": 0.47441217150760717
+    },
+    "pagerank_norm": {
+      "CA": 0.0,
+      "CB": 0.5405405,
+      "CC": 1.0
+    },
+    "betweenness": {
+      "CA": 0.0,
+      "CB": 0.5,
+      "CC": 0.0
+    },
+    "component": {
+      "id": "CA",
+      "size": 3
+    },
+    "communities": [
+      [
+        "CA",
+        "CB",
+        "CC"
+      ]
+    ],
+    "paths": {
+      "CA->CC": [
+        [
+          "CA",
+          "CB",
+          "CC"
+        ]
+      ]
+    }
+  },
+  "features_CB_at_T": {
+    "T": "2020-01-01T02:00:00Z",
+    "note": "Hand-computed from SRS \u00a710.1/\u00a715 for account CB (in 100 from CA at 01:00, out 50 to CC at 02:00); null = NaN.",
+    "vector": {
+      "F01": [
+        2,
+        0
+      ],
+      "F02": [
+        1,
+        0
+      ],
+      "F03": [
+        1,
+        0
+      ],
+      "F04": [
+        100.0,
+        0
+      ],
+      "F05": [
+        50.0,
+        0
+      ],
+      "F06": [
+        75.0,
+        0
+      ],
+      "F07": [
+        75.0,
+        0
+      ],
+      "F08": [
+        35.35533905932738,
+        0
+      ],
+      "F09": [
+        2.0,
+        0
+      ],
+      "F10": [
+        0.0,
+        0
+      ],
+      "F11": [
+        2,
+        0
+      ],
+      "F12": [
+        1,
+        0
+      ],
+      "F13": [
+        1,
+        0
+      ],
+      "F14": [
+        0.5405405,
+        0
+      ],
+      "F15": [
+        0.5,
+        0
+      ],
+      "F16": [
+        3,
+        0
+      ],
+      "F17": [
+        3,
+        0
+      ],
+      "F18": [
+        0.6666666666666666,
+        0
+      ],
+      "F19": [
+        null,
+        2
+      ],
+      "F20": [
+        0.6666666666666666,
+        0
+      ],
+      "F21": [
+        2,
+        0
+      ],
+      "F22": [
+        0.2857142857142857,
+        0
+      ],
+      "F23": [
+        10.0,
+        0
+      ],
+      "F24": [
+        3600.0,
+        0
+      ],
+      "F25": [
+        1.0,
+        0
+      ],
+      "F26": [
+        1.0,
+        0
+      ],
+      "F27": [
+        null,
+        2
+      ],
+      "F28": [
+        1.0,
+        0
+      ],
+      "F29": [
+        0.0,
+        0
+      ],
+      "F30": [
+        0.0,
+        1
+      ],
+      "F31": [
+        null,
+        2
+      ],
+      "F32": [
+        1,
+        0
+      ],
+      "F33": [
+        null,
+        2
+      ],
+      "F34": [
+        0,
+        1
+      ],
+      "F35": [
+        1.0,
+        0
+      ],
+      "F36": [
+        null,
+        2
+      ],
+      "F37": [
+        null,
+        2
+      ],
+      "F38": [
+        2,
+        0
+      ],
+      "F39": [
+        1.0,
+        0
+      ],
+      "F40": [
+        1.0,
+        0
+      ],
+      "F41": [
+        75.0,
+        0
+      ],
+      "F42": [
+        1.0,
+        0
+      ]
+    }
+  }
+}

@@ -1,0 +1,91 @@
+.statement {
+  display: flex;
+  gap: var(--sp-2);
+  align-items: flex-start;
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--line-strong);
+  background: var(--ink-1);
+  color: var(--text-1);
+  font-size: var(--fs-sm);
+  max-width: 100ch;
+}
+.statement svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--warn);
+}
+.path {
+  border: 1px solid var(--line);
+  background: var(--ink-1);
+}
+.pathHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}
+.chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  padding: var(--sp-4);
+  row-gap: var(--sp-3);
+}
+.acct {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--line-strong);
+  background: var(--ink-0);
+}
+.acct a {
+  font-family: var(--font-entity);
+  font-style: italic;
+  font-weight: 560;
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  text-decoration: none;
+}
+.acct a:hover {
+  text-decoration: underline;
+}
+.acctId {
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  color: var(--text-3);
+}
+.hop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 112px;
+  padding: 0 var(--sp-2);
+  color: var(--text-2);
+  font-size: 0.6875rem;
+}
+.hop .num {
+  color: var(--text-1);
+  font-size: var(--fs-xs);
+}
+.arrow {
+  display: block;
+  width: 100%;
+  height: 10px;
+  color: var(--line-strong);
+}
+.evidence {
+  border-top: 1px solid var(--line);
+}
+.evidence h3 {
+  padding: var(--sp-3) var(--sp-4) 0;
+  font-size: var(--fs-xs);
+  color: var(--text-2);
+}

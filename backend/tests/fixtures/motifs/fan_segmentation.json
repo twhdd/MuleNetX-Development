@@ -1,0 +1,80 @@
+{
+ "note": "Greedy segmentation of A's outbound: [B,C,D] in the first window, [E,F,G] starting at 4000 s, H alone. Two instances; spans 200 s \u2192 confidence (1 + 17/18 + 1)/3 = 53/54",
+ "transactions": [
+  {
+   "id": "t1",
+   "src": "A",
+   "dst": "B",
+   "ts": 0,
+   "amount": "100.00"
+  },
+  {
+   "id": "t2",
+   "src": "A",
+   "dst": "C",
+   "ts": 100,
+   "amount": "100.00"
+  },
+  {
+   "id": "t3",
+   "src": "A",
+   "dst": "D",
+   "ts": 200,
+   "amount": "100.00"
+  },
+  {
+   "id": "t4",
+   "src": "A",
+   "dst": "E",
+   "ts": 4000,
+   "amount": "100.00"
+  },
+  {
+   "id": "t5",
+   "src": "A",
+   "dst": "F",
+   "ts": 4100,
+   "amount": "100.00"
+  },
+  {
+   "id": "t6",
+   "src": "A",
+   "dst": "G",
+   "ts": 4200,
+   "amount": "100.00"
+  },
+  {
+   "id": "t7",
+   "src": "A",
+   "dst": "H",
+   "ts": 9000,
+   "amount": "100.00"
+  }
+ ],
+ "expected": [
+  {
+   "type": "FAN_OUT",
+   "anchor": "A",
+   "txs": [
+    "t1",
+    "t2",
+    "t3"
+   ],
+   "confidence": "0.9814815",
+   "order_ambiguous": false,
+   "temporal_match": "0.9444444"
+  },
+  {
+   "type": "FAN_OUT",
+   "anchor": "A",
+   "txs": [
+    "t4",
+    "t5",
+    "t6"
+   ],
+   "confidence": "0.9814815",
+   "order_ambiguous": false,
+   "temporal_match": "0.9444444"
+  }
+ ]
+}

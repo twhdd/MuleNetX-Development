@@ -1,0 +1,99 @@
+.matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 2px;
+  font-size: var(--fs-xs);
+}
+.matrix th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 30px;
+  padding: 0 2px;
+  background: var(--ink-1);
+  color: var(--text-2);
+  font-weight: 500;
+  text-align: center;
+}
+.matrix th:first-child {
+  padding-left: var(--sp-3);
+  text-align: left;
+}
+.row {
+  cursor: pointer;
+}
+.row:focus-visible {
+  outline: none;
+}
+.row:focus-visible .who,
+.row:hover .who {
+  background: var(--ink-2);
+}
+.row[aria-selected="true"] .who {
+  background: var(--ink-3);
+  box-shadow: inset 2px 0 0 var(--text-1);
+}
+.who {
+  padding: 0 var(--sp-2) 0 var(--sp-3);
+  height: 34px;
+  min-width: 0;
+  transition: background var(--t-fast) var(--ease-out);
+}
+.whoInner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.15;
+  min-width: 0;
+}
+.ref {
+  font-family: var(--font-entity);
+  font-style: italic;
+  font-weight: 560;
+  font-size: var(--fs-md);
+  color: var(--text-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 120px;
+}
+.tierline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.cell {
+  width: 44px;
+  height: 34px;
+  padding: 0;
+  text-align: center;
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  border-left: 2px solid var(--ink-1);
+  transition: filter var(--t-fast) var(--ease-out);
+}
+.row:hover .cell {
+  filter: brightness(1.12);
+}
+.gap {
+  width: 4px;
+  padding: 0;
+}
+.final {
+  width: 52px;
+  font-weight: 700;
+  font-size: var(--fs-xs);
+}
+.na {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 4px, rgba(128, 141, 155, 0.16) 4px 5px),
+    #10151c;
+  color: var(--text-3);
+}
+.pending {
+  background: var(--ink-2);
+}

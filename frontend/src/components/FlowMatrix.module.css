@@ -1,0 +1,56 @@
+.wrap {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--sp-4);
+}
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+.note {
+  color: var(--text-3);
+  font-size: var(--fs-xs);
+  max-width: 72ch;
+}
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.keyBar {
+  width: 120px;
+  height: 8px;
+}
+.cue {
+  margin-bottom: var(--sp-2);
+  color: var(--text-2);
+  font-size: var(--fs-xs);
+}
+.scroller {
+  overflow-x: auto;
+}
+.svg text {
+  fill: var(--text-2);
+  font-size: 12px;
+}
+.svg .entity {
+  font-family: var(--font-entity);
+  font-style: italic;
+}
+.svg .focus {
+  fill: var(--text-1);
+  font-weight: 700;
+}
+.cell {
+  shape-rendering: crispEdges;
+}
+.cell:hover {
+  stroke: var(--text-1);
+  stroke-width: 1;
+}
