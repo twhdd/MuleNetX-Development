@@ -25,3 +25,16 @@ def test_AT_FLOW_02_cycle_not_traversed(app, client, users) -> None:
         headers=admin.headers,
     )
     assert same.status_code == 400 and same.json()["error"]["code"] == "INVALID_PATH_REQUEST"
+    short = client.get(
+        "/api/v1/graph/path",
+        params={"source_account_id": "CA", "destination_account_id": "f2:CC"},
+        headers=admin.headers,
+    ).json()
+    assert short["source_account_id"] == "f2:CA"
+    assert [p["accounts"] for p in short["paths"]] == [["f2:CA", "f2:CB", "f2:CC"]]
+    mixed = client.get(
+        "/api/v1/graph/path",
+        params={"source_account_id": "CA", "destination_account_id": "f2:CA"},
+        headers=admin.headers,
+    )
+    assert mixed.status_code == 400 and mixed.json()["error"]["code"] == "INVALID_PATH_REQUEST"

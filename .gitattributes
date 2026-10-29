@@ -1,0 +1,4 @@
+# Shell scripts run inside Linux containers; CRLF breaks bash (the Postgres role init fails).
+*.sh text eol=lf
+Dockerfile text eol=lf
+Makefile text eol=lf

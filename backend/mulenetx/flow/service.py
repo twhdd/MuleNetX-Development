@@ -15,8 +15,8 @@ from mulenetx.core.errors import AppError
 from mulenetx.core.lineage import Lineage, lineage_envelope
 from mulenetx.core.runtime import Runtime
 from mulenetx.core.timeutil import isoformat_utc, utcnow
-from mulenetx.db.models.canonical import Account
 from mulenetx.db.models.lineage import GraphSnapshot
+from mulenetx.db.repositories import accounts as account_repo
 from mulenetx.db.repositories.context import active_lineage
 from mulenetx.flow.interactive_paths import Budget, all_paths, pruned_subgraph, shortest_paths
 from mulenetx.flow.ordering import Edge, path_sort_key
@@ -134,9 +134,10 @@ class MoneyFlowService:
             raise AppError(ec.INVALID_PATH_REQUEST)
         s = self.rt.settings
         snapshot = resolve_snapshot(db, snapshot_id)
-        for acc in (source, destination):
-            if db.get(Account, acc) is None:
-                raise AppError(ec.NOT_FOUND, details={"resource": "account"})
+        source = account_repo.resolve(db, source).account_id
+        destination = account_repo.resolve(db, destination).account_id
+        if source == destination:
+            raise AppError(ec.INVALID_PATH_REQUEST)
         sid = str(snapshot.graph_snapshot_id)
         deadline = _Deadline(s.path_query_timeout_seconds)
         for acc in (source, destination):
