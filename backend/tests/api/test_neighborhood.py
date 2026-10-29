@@ -41,6 +41,19 @@ def test_neighborhood_order_and_truncation(app, client, users) -> None:
     assert [(n["account_id"], n["hop"]) for n in two["nodes"]] == [("nb:CC", 0), ("nb:CB", 1), ("nb:CA", 2)]
 
 
+def test_short_account_id_resolves_in_active_dataset(app, client, users) -> None:
+    admin = users("ADMIN")
+    seed_and_activate(app, client, admin, ABC, key="ns")
+    short = client.get(
+        "/api/v1/graph/neighborhood", params={"account_id": "CB", "depth": 1}, headers=admin.headers
+    ).json()
+    assert short["account_id"] == "ns:CB"
+    assert [n["account_id"] for n in short["nodes"]] == ["ns:CB", "ns:CA", "ns:CC"]
+    assert (
+        client.get("/api/v1/graph/neighborhood", params={"account_id": "ZZ"}, headers=admin.headers).status_code == 404
+    )
+
+
 def test_unknown_account_and_snapshot(app, client, users) -> None:
     admin = users("ADMIN")
     seed_and_activate(app, client, admin, ABC, key="nu")

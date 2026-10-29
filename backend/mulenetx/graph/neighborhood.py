@@ -23,6 +23,7 @@ from mulenetx.core.runtime import Runtime
 from mulenetx.core.timeutil import utcnow
 from mulenetx.db.models.canonical import Account
 from mulenetx.db.models.lineage import GraphSnapshot
+from mulenetx.db.repositories import accounts as account_repo
 from mulenetx.db.repositories.context import active, active_lineage
 from mulenetx.graph import cypher
 from mulenetx.graph.build import snapshot_key
@@ -85,8 +86,7 @@ def neighborhood(
     snapshot_id: uuid.UUID | None,
 ) -> dict[str, Any]:
     snap = resolve_snapshot(db, snapshot_id)
-    if db.get(Account, account_id) is None:
-        raise AppError(ec.NOT_FOUND, details={"resource": "account"})
+    account_id = account_repo.resolve(db, account_id).account_id
     deadline = _Deadline(rt.settings.graph_query_timeout_seconds)
     sid = str(snap.graph_snapshot_id)
     if not _run(rt, deadline, cypher.ACCOUNT_IN_SNAPSHOT, {"key": snapshot_key(snap.graph_snapshot_id, account_id)}):

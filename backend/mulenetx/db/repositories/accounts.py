@@ -66,6 +66,20 @@ def require(db: Session, account_id: str) -> Account:
     return a
 
 
+def resolve(db: Session, account_id: str) -> Account:
+    """An exact canonical account ID, else a `source_account_ref` (the short ID) in the active dataset (DEC-04)."""
+    a = db.get(Account, account_id)
+    if a is None:
+        ctx = active(db)
+        if ctx.dataset_id is not None:
+            a = db.execute(
+                select(Account).where(Account.dataset_id == ctx.dataset_id, Account.source_account_ref == account_id)
+            ).scalar_one_or_none()
+    if a is None:
+        raise AppError(ec.NOT_FOUND, details={"resource": "account"})
+    return a
+
+
 def _escape_like(value: str) -> str:
     return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
 
